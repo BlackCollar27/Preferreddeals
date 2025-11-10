@@ -65,7 +65,10 @@ export default function App() {
   const handleBusinessSignup = (id: string) => {
     setBusinessId(id);
     setIsBusinessLoggedIn(true);
-    setCurrentPage('dashboard');
+    setUserType('partner');
+    setUserName('Business Partner');
+    setIsUserLoggedIn(true);
+    setCurrentPage('user-dashboard');
   };
 
   const handleUserLogin = (email: string, name: string) => {
@@ -259,14 +262,25 @@ export default function App() {
       {currentPage === 'manage-your-listing' && (
         <ManageYourListing 
           onBack={() => setCurrentPage('directory')} 
-          onLogin={() => setCurrentPage('dashboard')}
+          onLogin={() => {
+            setUserType('partner');
+            setIsBusinessLoggedIn(true);
+            setUserName('Business Partner');
+            setIsUserLoggedIn(true);
+            setCurrentPage('user-dashboard');
+          }}
           defaultTab={businessLoginTab}
         />
       )}
       {currentPage === 'partner-dashboard-login' && (
         <PartnerDashboardLogin 
           onBack={() => setCurrentPage('directory')} 
-          onDistributionLogin={() => setCurrentPage('user-dashboard')}
+          onDistributionLogin={() => {
+            setUserType('distribution');
+            setUserName('Distribution Partner');
+            setIsUserLoggedIn(true);
+            setCurrentPage('user-dashboard');
+          }}
           defaultTab={partnerLoginTab}
         />
       )}
