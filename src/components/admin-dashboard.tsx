@@ -13,6 +13,10 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Switch } from './ui/switch';
 import { toast } from 'sonner@2.0.3';
+import { BusinessDetailAdmin } from './business-detail-admin';
+import { DistributorDetailAdmin } from './distributor-detail-admin';
+import { LocationDetailAdmin } from './location-detail-admin';
+import { UserDetailAdmin } from './user-detail-admin';
 
 interface AdminDashboardProps {
   userName: string;
@@ -33,6 +37,10 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
   const [businessDialogMode, setBusinessDialogMode] = useState<'view' | 'edit' | 'delete' | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<typeof locations[0] | null>(null);
   const [locationDialogMode, setLocationDialogMode] = useState<'view' | 'edit' | 'delete' | null>(null);
+  const [showBusinessDetail, setShowBusinessDetail] = useState(false);
+  const [showDistributorDetail, setShowDistributorDetail] = useState(false);
+  const [showLocationDetail, setShowLocationDetail] = useState(false);
+  const [showUserDetail, setShowUserDetail] = useState(false);
   
   // Pricing Management State
   const [monthlyPrice, setMonthlyPrice] = useState(49);
@@ -238,7 +246,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
 
   const handleUserAction = (user: typeof recentUsers[0], mode: 'view' | 'edit' | 'suspend') => {
     setSelectedUser(user);
-    setUserDialogMode(mode);
+    if (mode === 'view') {
+      setShowUserDetail(true);
+    } else {
+      setUserDialogMode(mode);
+    }
   };
 
   const handleCloseUserDialog = () => {
@@ -248,12 +260,25 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
 
   const handleSaveUser = () => {
     // Handle save logic here
+    toast.success('User updated successfully!');
     handleCloseUserDialog();
   };
 
   const handleSuspendUser = () => {
     // Handle suspend logic here
-    handleCloseUserDialog();
+    toast.success('User suspended successfully!');
+    setShowUserDetail(false);
+    setSelectedUser(null);
+  };
+
+  const handleEditUserFromDetail = () => {
+    setShowUserDetail(false);
+    setUserDialogMode('edit');
+  };
+
+  const handleSuspendUserFromDetail = () => {
+    setShowUserDetail(false);
+    setUserDialogMode('suspend');
   };
 
   const handleApprovalAction = (item: any, mode: 'view' | 'approve' | 'reject') => {
@@ -278,7 +303,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
 
   const handleDistributorAction = (distributor: any, mode: 'view' | 'edit') => {
     setSelectedDistributor(distributor);
-    setDistributorDialogMode(mode);
+    if (mode === 'view') {
+      setShowDistributorDetail(true);
+    } else {
+      setDistributorDialogMode(mode);
+    }
   };
 
   const handleCloseDistributorDialog = () => {
@@ -288,12 +317,34 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
 
   const handleSaveDistributor = () => {
     // Handle save logic here
+    toast.success('Distributor updated successfully!');
     handleCloseDistributorDialog();
+  };
+
+  const handleDeleteDistributor = () => {
+    // Handle delete logic here
+    toast.success('Distributor deleted successfully!');
+    setShowDistributorDetail(false);
+    setSelectedDistributor(null);
+  };
+
+  const handleEditDistributorFromDetail = () => {
+    setShowDistributorDetail(false);
+    setDistributorDialogMode('edit');
+  };
+
+  const handleDeleteDistributorFromDetail = () => {
+    setShowDistributorDetail(false);
+    setDistributorDialogMode('edit'); // Show dialog for delete confirmation
   };
 
   const handleBusinessAction = (business: typeof recentBusinesses[0], mode: 'view' | 'edit' | 'delete') => {
     setSelectedBusiness(business);
-    setBusinessDialogMode(mode);
+    if (mode === 'view') {
+      setShowBusinessDetail(true);
+    } else {
+      setBusinessDialogMode(mode);
+    }
   };
 
   const handleCloseBusinessDialog = () => {
@@ -303,17 +354,34 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
 
   const handleSaveBusiness = () => {
     // Handle save logic here
+    toast.success('Business updated successfully!');
     handleCloseBusinessDialog();
   };
 
   const handleDeleteBusiness = () => {
     // Handle delete logic here
-    handleCloseBusinessDialog();
+    toast.success('Business deleted successfully!');
+    setShowBusinessDetail(false);
+    setSelectedBusiness(null);
+  };
+
+  const handleEditFromDetail = () => {
+    setShowBusinessDetail(false);
+    setBusinessDialogMode('edit');
+  };
+
+  const handleDeleteFromDetail = () => {
+    setShowBusinessDetail(false);
+    setBusinessDialogMode('delete');
   };
 
   const handleLocationAction = (location: typeof locations[0], mode: 'view' | 'edit' | 'delete') => {
     setSelectedLocation(location);
-    setLocationDialogMode(mode);
+    if (mode === 'view') {
+      setShowLocationDetail(true);
+    } else {
+      setLocationDialogMode(mode);
+    }
   };
 
   const handleCloseLocationDialog = () => {
@@ -323,13 +391,83 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
 
   const handleSaveLocation = () => {
     // Handle save logic here
+    toast.success('Location updated successfully!');
     handleCloseLocationDialog();
   };
 
   const handleDeleteLocation = () => {
     // Handle delete logic here
-    handleCloseLocationDialog();
+    toast.success('Location deleted successfully!');
+    setShowLocationDetail(false);
+    setSelectedLocation(null);
   };
+
+  const handleEditLocationFromDetail = () => {
+    setShowLocationDetail(false);
+    setLocationDialogMode('edit');
+  };
+
+  const handleDeleteLocationFromDetail = () => {
+    setShowLocationDetail(false);
+    setLocationDialogMode('delete');
+  };
+
+  // Show detail views if any item is selected
+  if (showBusinessDetail && selectedBusiness) {
+    return (
+      <BusinessDetailAdmin
+        business={selectedBusiness}
+        onBack={() => {
+          setShowBusinessDetail(false);
+          setSelectedBusiness(null);
+        }}
+        onEdit={handleEditFromDetail}
+        onDelete={handleDeleteFromDetail}
+      />
+    );
+  }
+
+  if (showDistributorDetail && selectedDistributor) {
+    return (
+      <DistributorDetailAdmin
+        distributor={selectedDistributor}
+        onBack={() => {
+          setShowDistributorDetail(false);
+          setSelectedDistributor(null);
+        }}
+        onEdit={handleEditDistributorFromDetail}
+        onDelete={handleDeleteDistributorFromDetail}
+      />
+    );
+  }
+
+  if (showLocationDetail && selectedLocation) {
+    return (
+      <LocationDetailAdmin
+        location={selectedLocation}
+        onBack={() => {
+          setShowLocationDetail(false);
+          setSelectedLocation(null);
+        }}
+        onEdit={handleEditLocationFromDetail}
+        onDelete={handleDeleteLocationFromDetail}
+      />
+    );
+  }
+
+  if (showUserDetail && selectedUser) {
+    return (
+      <UserDetailAdmin
+        user={selectedUser}
+        onBack={() => {
+          setShowUserDetail(false);
+          setSelectedUser(null);
+        }}
+        onEdit={handleEditUserFromDetail}
+        onSuspend={handleSuspendUserFromDetail}
+      />
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
@@ -545,7 +683,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
               {/* Mobile Card View */}
               <div className="md:hidden space-y-3">
                 {recentBusinesses.map((business) => (
-                  <div key={business.id} className="p-4 border rounded-lg space-y-3">
+                  <div 
+                    key={business.id} 
+                    className="p-4 border rounded-lg space-y-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => handleBusinessAction(business, 'view')}
+                  >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
                         <p className="font-medium truncate">{business.name}</p>
@@ -553,7 +695,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                         <p className="text-xs text-muted-foreground mt-1">{business.category}</p>
                       </div>
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                           <Button variant="ghost" size="icon" className="flex-shrink-0">
                             <MoreVertical className="w-4 h-4" />
                           </Button>
@@ -603,7 +745,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                   </TableHeader>
                   <TableBody>
                     {recentBusinesses.map((business) => (
-                      <TableRow key={business.id}>
+                      <TableRow 
+                        key={business.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => handleBusinessAction(business, 'view')}
+                      >
                         <TableCell className="text-xs sm:text-sm">{business.name}</TableCell>
                         <TableCell className="text-xs sm:text-sm">{business.owner}</TableCell>
                         <TableCell className="text-xs sm:text-sm">{business.category}</TableCell>
@@ -618,7 +764,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-xs sm:text-sm">{business.joined}</TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" size="icon">
@@ -670,14 +816,18 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
               {/* Mobile Card View */}
               <div className="md:hidden space-y-3">
                 {recentUsers.map((user) => (
-                  <div key={user.id} className="p-4 border rounded-lg space-y-3">
+                  <div 
+                    key={user.id} 
+                    className="p-4 border rounded-lg space-y-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => handleUserAction(user, 'view')}
+                  >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
                         <p className="font-medium truncate">{user.name}</p>
                         <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                       </div>
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                           <Button variant="ghost" size="icon" className="flex-shrink-0">
                             <MoreVertical className="w-4 h-4" />
                           </Button>
@@ -724,7 +874,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                   </TableHeader>
                   <TableBody>
                     {recentUsers.map((user) => (
-                      <TableRow key={user.id}>
+                      <TableRow 
+                        key={user.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => handleUserAction(user, 'view')}
+                      >
                         <TableCell className="text-xs sm:text-sm">{user.name}</TableCell>
                         <TableCell className="text-xs sm:text-sm">{user.email}</TableCell>
                         <TableCell className="text-xs sm:text-sm">{user.joined}</TableCell>
@@ -732,7 +886,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                         <TableCell className="text-xs sm:text-sm">
                           <Badge variant="default" className="text-xs">{user.status}</Badge>
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" size="icon">
@@ -832,7 +986,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
               {/* Mobile Card View */}
               <div className="md:hidden space-y-3">
                 {locations.map((location) => (
-                  <div key={location.id} className="p-4 border rounded-lg space-y-3">
+                  <div 
+                    key={location.id} 
+                    className="p-4 border rounded-lg space-y-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => handleLocationAction(location, 'view')}
+                  >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <MapPin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
@@ -845,7 +1003,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                         </div>
                       </div>
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                           <Button variant="ghost" size="icon" className="flex-shrink-0">
                             <MoreVertical className="w-4 h-4" />
                           </Button>
@@ -901,7 +1059,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                   </TableHeader>
                   <TableBody>
                     {locations.map((location) => (
-                      <TableRow key={location.id}>
+                      <TableRow 
+                        key={location.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => handleLocationAction(location, 'view')}
+                      >
                         <TableCell className="text-xs sm:text-sm">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-muted-foreground" />
@@ -921,7 +1083,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                         <TableCell className="text-xs sm:text-sm">
                           <Badge variant="default" className="text-xs">{location.status}</Badge>
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" size="icon">
@@ -1010,7 +1172,11 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
             <CardContent className="p-4 sm:p-6 pt-0">
               <div className="space-y-4">
                 {activeDistributors.map((distributor) => (
-                  <Card key={distributor.id} className="border-2">
+                  <Card 
+                    key={distributor.id} 
+                    className="border-2 cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => handleDistributorAction(distributor, 'view')}
+                  >
                     <CardContent className="p-4">
                       <div className="flex flex-col lg:flex-row gap-4">
                         {/* Main Info */}
@@ -1024,7 +1190,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
                               <p className="text-sm text-muted-foreground">{distributor.contactPerson}</p>
                             </div>
                             <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
+                              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                                 <Button variant="ghost" size="icon">
                                   <MoreVertical className="w-4 h-4" />
                                 </Button>
