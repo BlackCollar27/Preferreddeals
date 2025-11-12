@@ -15,9 +15,10 @@ import { toast } from 'sonner@2.0.3';
 
 interface DistributionPartnerDashboardProps {
   userName: string;
+  onNavigate?: (page: string) => void;
 }
 
-export function DistributionPartnerDashboard({ userName }: DistributionPartnerDashboardProps) {
+export function DistributionPartnerDashboard({ userName, onNavigate }: DistributionPartnerDashboardProps) {
   const [showWhiteLabel, setShowWhiteLabel] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof partnerLocations[0] | null>(null);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
@@ -99,7 +100,7 @@ export function DistributionPartnerDashboard({ userName }: DistributionPartnerDa
   ];
 
   if (showWhiteLabel) {
-    return <WhiteLabelPlatform onBack={() => setShowWhiteLabel(false)} partnerName={userName} />;
+    return <WhiteLabelPlatform onBack={() => setShowWhiteLabel(false)} partnerName={userName} onNavigate={onNavigate} />;
   }
 
   const recentReferrals = [
@@ -216,7 +217,7 @@ export function DistributionPartnerDashboard({ userName }: DistributionPartnerDa
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
       <div className="mb-6 sm:mb-8">
-        <h1 className="mb-2">Distribution Partner Dashboard</h1>
+        <h1 className="mb-2 text-[20px]">Distribution Partner Dashboard</h1>
         <p className="text-muted-foreground text-sm sm:text-base">Track your link performance, {userName}</p>
       </div>
 
@@ -1199,13 +1200,6 @@ export function DistributionPartnerDashboard({ userName }: DistributionPartnerDa
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* White-Label Platform Management */}
-      {showWhiteLabel && (
-        <WhiteLabelPlatform 
-          onClose={() => setShowWhiteLabel(false)} 
-        />
-      )}
     </div>
   );
 }

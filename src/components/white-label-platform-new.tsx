@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, Check, X, Eye, Settings, Globe, Building2, Users, TrendingUp, BarChart3, MapPin, Search, MoreVertical, Edit, Trash2, Mail, Phone, ExternalLink, ChevronLeft, ChevronRight, Map, Package, DollarSign, Store, Plus, CheckCircle, Star, Filter } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
@@ -9,34 +9,24 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from './ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
-import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { toast } from 'sonner@2.0.3';
-import { WhiteLabelCustomization } from './white-label-customization';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
+import { BusinessDetailWhiteLabel } from './business-detail-whitelabel';
+import { LocationDetailWhiteLabel } from './location-detail-whitelabel';
 
 interface WhiteLabelPlatformProps {
   onBack: () => void;
   partnerName: string;
+  onNavigate?: (page: string) => void;
 }
 
-export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformProps) {
+export function WhiteLabelPlatform({ onBack, partnerName, onNavigate }: WhiteLabelPlatformProps) {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedBusiness, setSelectedBusiness] = useState<any>(null);
   const [approvalDialogMode, setApprovalDialogMode] = useState<'approve' | 'reject' | 'view' | null>(null);
-  const [domainSettingsOpen, setDomainSettingsOpen] = useState(false);
-  const [settingsTabIndex, setSettingsTabIndex] = useState(0);
-  const [settingsCarouselApi, setSettingsCarouselApi] = useState<any>();
-  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
-  const [menuDialogOpen, setMenuDialogOpen] = useState(false);
-  const [menuType, setMenuType] = useState<'header' | 'footer'>('header');
-  const [enableCommunityAccounts, setEnableCommunityAccounts] = useState(true);
-  const [enableSaveDeals, setEnableSaveDeals] = useState(true);
-  const [enableMessages, setEnableMessages] = useState(true);
   const [selectedLocation, setSelectedLocation] = useState<typeof platformLocations[0] | null>(null);
-  const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+  const [selectedBusinessDetail, setSelectedBusinessDetail] = useState<any>(null);
   
   // Marketplace state
   const [marketplaceSearchTerm, setMarketplaceSearchTerm] = useState('');
@@ -44,29 +34,7 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
   const [selectedMarketplaceBusiness, setSelectedMarketplaceBusiness] = useState<typeof mockMarketplaceBusinesses[0] | null>(null);
   const [businessDetailOpen, setBusinessDetailOpen] = useState(false);
 
-  // Categories state
-  const [categories, setCategories] = useState([
-    { id: 1, name: 'Restaurant', count: 15 },
-    { id: 2, name: 'Retail', count: 12 },
-    { id: 3, name: 'Services', count: 8 },
-    { id: 4, name: 'Healthcare', count: 5 },
-    { id: 5, name: 'Technology', count: 2 },
-  ]);
 
-  // Menu items state
-  const [headerMenuItems, setHeaderMenuItems] = useState([
-    { id: 1, label: 'Home', url: '/', order: 1 },
-    { id: 2, label: 'All Listings', url: '/listings', order: 2 },
-    { id: 3, label: 'Featured', url: '/featured', order: 3 },
-    { id: 4, label: 'About', url: '/about', order: 4 },
-  ]);
-
-  const [footerMenuItems, setFooterMenuItems] = useState([
-    { id: 1, label: 'About Us', url: '/about', order: 1 },
-    { id: 2, label: 'Contact', url: '/contact', order: 2 },
-    { id: 3, label: 'Privacy Policy', url: '/privacy', order: 3 },
-    { id: 4, label: 'Terms of Service', url: '/terms', order: 4 },
-  ]);
 
   // Platform locations data
   const platformLocations = [
@@ -199,25 +167,6 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
     return matchesSearch && matchesCategory;
   });
 
-  // Settings tab configuration
-  const settingsTabs = [
-    { value: 'domain', label: 'Domain' },
-    { value: 'branding', label: 'Branding' },
-    { value: 'customization', label: 'Customization' },
-    { value: 'settings', label: 'Settings' },
-  ];
-
-  // Sync carousel with tab index
-  useEffect(() => {
-    if (!settingsCarouselApi) {
-      return;
-    }
-
-    settingsCarouselApi.on('select', () => {
-      setSettingsTabIndex(settingsCarouselApi.selectedScrollSnap());
-    });
-  }, [settingsCarouselApi]);
-
   // Mock partner data
   const partnerData = {
     name: partnerName || 'Community Connect',
@@ -304,6 +253,41 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
     toast.error('Business application rejected.');
   };
 
+  const handleViewBusinessDetail = (business: any) => {
+    setSelectedBusinessDetail(business);
+  };
+
+  const handleEditBusiness = (business: any) => {
+    toast.info(`Editing ${business.name} - functionality coming soon`);
+  };
+
+  const handleRemoveApprovedBusiness = (business: any) => {
+    if (confirm(`Are you sure you want to remove ${business.name} from your platform?`)) {
+      toast.success(`${business.name} has been removed from your platform`);
+      // In a real app, this would remove from the list
+    }
+  };
+
+  // Show location detail view if a location is selected
+  if (selectedLocation) {
+    return (
+      <LocationDetailWhiteLabel
+        location={selectedLocation}
+        onBack={() => setSelectedLocation(null)}
+      />
+    );
+  }
+
+  // Show business detail view if a business is selected
+  if (selectedBusinessDetail) {
+    return (
+      <BusinessDetailWhiteLabel
+        business={selectedBusinessDetail}
+        onBack={() => setSelectedBusinessDetail(null)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -319,7 +303,7 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
               <h1 className="mb-2">White-Label Platform</h1>
               <p className="text-muted-foreground">Manage your community directory</p>
             </div>
-            <Button onClick={() => setDomainSettingsOpen(true)}>
+            <Button onClick={() => onNavigate?.('white-label-settings')}>
               <Settings className="w-4 h-4 mr-2" />
               Platform Settings
             </Button>
@@ -386,7 +370,7 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
           <div className="space-y-3 sm:space-y-4">
             {/* Tab Name with Arrows */}
             <div className="relative text-center">
-              <h2 className="text-xl sm:text-2xl capitalize flex items-center justify-center gap-2">
+              <h2 className="text-xl sm:text-2xl capitalize flex items-center justify-center gap-2 font-bold">
                 {activeTab === 'overview' ? 'Overview' :
                  activeTab === 'pending' ? (
                   <>
@@ -640,7 +624,10 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
                   {approvedBusinesses.map((business) => (
                     <div key={business.id} className="p-4 border rounded-lg space-y-3">
                       <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0 flex-1">
+                        <div 
+                          className="min-w-0 flex-1 cursor-pointer hover:opacity-70 transition-opacity"
+                          onClick={() => handleViewBusinessDetail(business)}
+                        >
                           <p className="font-medium truncate">{business.name}</p>
                           <p className="text-xs text-muted-foreground">{business.owner}</p>
                           <p className="text-xs text-muted-foreground mt-1">{business.category}</p>
@@ -652,15 +639,15 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleViewBusinessDetail(business)}>
                               <Eye className="w-4 h-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleEditBusiness(business)}>
                               <Edit className="w-4 h-4 mr-2" />
                               Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
+                            <DropdownMenuItem className="text-destructive" onClick={() => handleRemoveApprovedBusiness(business)}>
                               <Trash2 className="w-4 h-4 mr-2" />
                               Remove
                             </DropdownMenuItem>
@@ -694,7 +681,11 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
                     </TableHeader>
                     <TableBody>
                       {approvedBusinesses.map((business) => (
-                        <TableRow key={business.id}>
+                        <TableRow 
+                          key={business.id}
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => handleViewBusinessDetail(business)}
+                        >
                           <TableCell className="font-medium">{business.name}</TableCell>
                           <TableCell>{business.owner}</TableCell>
                           <TableCell>{business.category}</TableCell>
@@ -705,7 +696,7 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
                             <Badge variant="default">{business.status}</Badge>
                           </TableCell>
                           <TableCell>{business.approvedDate}</TableCell>
-                          <TableCell className="text-right">
+                          <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon">
@@ -713,15 +704,15 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleViewBusinessDetail(business)}>
                                   <Eye className="w-4 h-4 mr-2" />
                                   View Details
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleEditBusiness(business)}>
                                   <Edit className="w-4 h-4 mr-2" />
                                   Edit
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="text-destructive">
+                                <DropdownMenuItem className="text-destructive" onClick={() => handleRemoveApprovedBusiness(business)}>
                                   <Trash2 className="w-4 h-4 mr-2" />
                                   Remove
                                 </DropdownMenuItem>
@@ -812,7 +803,6 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
                   {platformLocations.map((location) => (
                     <Card key={location.id} className="border-2 hover:border-gray-900 transition-colors cursor-pointer" onClick={() => {
                       setSelectedLocation(location);
-                      setLocationDialogOpen(true);
                     }}>
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between mb-3">
@@ -1146,413 +1136,6 @@ export function WhiteLabelPlatform({ onBack, partnerName }: WhiteLabelPlatformPr
                 </Button>
               </div>
             )}
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Platform Settings Dialog with Carousel */}
-      <Dialog open={domainSettingsOpen} onOpenChange={setDomainSettingsOpen}>
-        <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-hidden flex flex-col" aria-describedby="platform-settings-desc">
-          <DialogHeader>
-            <DialogTitle>Platform Settings</DialogTitle>
-            <DialogDescription id="platform-settings-desc">
-              Configure your white-label platform settings, branding, and custom domain
-            </DialogDescription>
-          </DialogHeader>
-
-          {/* Tab Name Indicator - Mobile (moved to top) */}
-          <div className="sm:hidden text-center pt-2 pb-1 relative">
-            <p className="text-sm font-medium">{settingsTabs[settingsTabIndex]?.label}</p>
-            
-            {/* Navigation Arrows - Mobile Only, positioned at tab name level */}
-            <button
-              onClick={() => settingsCarouselApi?.scrollPrev()}
-              disabled={settingsTabIndex === 0}
-              className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 size-8 sm:size-10 rounded-full bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center shadow-sm transition-all"
-            >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            
-            <button
-              onClick={() => settingsCarouselApi?.scrollNext()}
-              disabled={settingsTabIndex === settingsTabs.length - 1}
-              className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 size-8 sm:size-10 rounded-full bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center shadow-sm transition-all"
-            >
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-          </div>
-
-          {/* Carousel Indicators - Mobile (moved to top) */}
-          <div className="flex sm:hidden justify-center gap-2 pb-3">
-            {settingsTabs.map((tab, index) => (
-              <button
-                key={tab.value}
-                onClick={() => {
-                  setSettingsTabIndex(index);
-                  settingsCarouselApi?.scrollTo(index);
-                }}
-                className={`h-2 rounded-full transition-all ${
-                  index === settingsTabIndex 
-                    ? 'w-8 bg-black' 
-                    : 'w-2 bg-gray-300'
-                }`}
-                aria-label={`Go to ${tab.label}`}
-              />
-            ))}
-          </div>
-
-          {/* Tab Navigation - Desktop */}
-          <div className="hidden sm:flex gap-2 border-b">
-            {settingsTabs.map((tab, index) => (
-              <button
-                key={tab.value}
-                onClick={() => {
-                  setSettingsTabIndex(index);
-                  settingsCarouselApi?.scrollTo(index);
-                }}
-                className={`px-4 py-2 text-sm transition-colors ${
-                  settingsTabIndex === index
-                    ? 'border-b-2 border-black font-medium'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Carousel for Tab Content */}
-          <div className="flex-1 overflow-hidden relative min-h-0">
-            <Carousel 
-              setApi={setSettingsCarouselApi}
-              opts={{
-                align: 'start',
-                loop: false,
-              }}
-              className="w-full h-full"
-            >
-              <CarouselContent className="h-full">
-                {/* Domain Tab */}
-                <CarouselItem>
-                  <div className="space-y-4 pt-4 max-h-[55vh] overflow-y-auto pr-2">
-                    <div>
-                      <Label>Default Subdomain</Label>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Input value={partnerData.domain} disabled />
-                        <Button variant="outline" size="icon">
-                          <ExternalLink className="w-4 h-4" />
-                        </Button>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Your default subdomain on the PREFERRED DEALS platform
-                      </p>
-                    </div>
-
-                    <div className="border-t pt-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <Label>Custom Domain</Label>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Use your own domain name (e.g., deals.yourcommunity.com)
-                          </p>
-                        </div>
-                        <Switch />
-                      </div>
-
-                      <div className="space-y-3">
-                        <div>
-                          <Label htmlFor="custom-domain">Your Custom Domain</Label>
-                          <Input 
-                            id="custom-domain"
-                            placeholder="deals.yourcommunity.com" 
-                            className="mt-2"
-                          />
-                        </div>
-
-                        <Card className="bg-blue-50 border-blue-200">
-                          <CardContent className="p-4">
-                            <h4 className="text-sm font-medium mb-2">DNS Configuration Required</h4>
-                            <div className="space-y-2 text-xs">
-                              <p>Add the following DNS records to your domain:</p>
-                              <div className="bg-white p-3 rounded border font-mono">
-                                <p>Type: CNAME</p>
-                                <p>Name: deals (or your subdomain)</p>
-                                <p>Value: cname.preferreddeals.com</p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </div>
-                    {/* Bottom padding for scroll clearance */}
-                    <div className="pb-4"></div>
-                  </div>
-                </CarouselItem>
-
-                {/* Branding Tab */}
-                <CarouselItem>
-                  <div className="space-y-4 pt-4 max-h-[55vh] overflow-y-auto pr-2">
-                    <div>
-                      <Label>Platform Name</Label>
-                      <Input defaultValue={partnerData.name} className="mt-2" />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        This will appear as your platform's title
-                      </p>
-                    </div>
-
-                    <div>
-                      <Label>Logo URL</Label>
-                      <Input placeholder="https://your-logo-url.com/logo.png" className="mt-2" />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Enter the URL of your logo image
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label>Primary Color</Label>
-                        <div className="flex gap-2 mt-2">
-                          <Input 
-                            type="color" 
-                            defaultValue={partnerData.primaryColor}
-                            className="w-20 h-10"
-                          />
-                          <Input 
-                            defaultValue={partnerData.primaryColor}
-                            className="flex-1"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <Label>Secondary Color</Label>
-                        <div className="flex gap-2 mt-2">
-                          <Input 
-                            type="color" 
-                            defaultValue={partnerData.secondaryColor}
-                            className="w-20 h-10"
-                          />
-                          <Input 
-                            defaultValue={partnerData.secondaryColor}
-                            className="flex-1"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label>Welcome Message</Label>
-                      <Textarea 
-                        placeholder="Welcome to our community deals platform..."
-                        className="mt-2"
-                        rows={3}
-                      />
-                    </div>
-                    {/* Bottom padding for scroll clearance */}
-                    <div className="pb-4"></div>
-                  </div>
-                </CarouselItem>
-
-                {/* Customization Tab */}
-                <CarouselItem>
-                  <div className="pt-4 max-h-[55vh] overflow-y-auto pr-2">
-                    <WhiteLabelCustomization
-                      categories={categories}
-                      headerMenuItems={headerMenuItems}
-                      footerMenuItems={footerMenuItems}
-                      onUpdateCategories={setCategories}
-                      onUpdateHeaderMenu={setHeaderMenuItems}
-                      onUpdateFooterMenu={setFooterMenuItems}
-                      enableCommunityAccounts={enableCommunityAccounts}
-                      enableSaveDeals={enableSaveDeals}
-                      enableMessages={enableMessages}
-                      onToggleCommunityAccounts={setEnableCommunityAccounts}
-                      onToggleSaveDeals={setEnableSaveDeals}
-                      onToggleMessages={setEnableMessages}
-                    />
-                    {/* Bottom padding for scroll clearance */}
-                    <div className="pb-4"></div>
-                  </div>
-                </CarouselItem>
-
-                {/* Settings Tab */}
-                <CarouselItem>
-                  <div className="space-y-4 pt-4 max-h-[55vh] overflow-y-auto pr-2">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                      <div className="flex-1">
-                        <Label>Auto-Approve Businesses</Label>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Automatically approve new business listings
-                        </p>
-                      </div>
-                      <Switch className="self-start" />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                      <div className="flex-1">
-                        <Label>Require Email Verification</Label>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Users must verify email before accessing deals
-                        </p>
-                      </div>
-                      <Switch defaultChecked className="self-start" />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                      <div className="flex-1">
-                        <Label>Allow Business Registrations</Label>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Let businesses register directly on your platform
-                        </p>
-                      </div>
-                      <Switch defaultChecked className="self-start" />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                      <div className="flex-1">
-                        <Label>Show PREFERRED DEALS Branding</Label>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Display "Powered by PREFERRED DEALS" footer
-                        </p>
-                      </div>
-                      <Switch defaultChecked className="self-start" />
-                    </div>
-                    {/* Bottom padding for scroll clearance */}
-                    <div className="pb-4"></div>
-                  </div>
-                </CarouselItem>
-              </CarouselContent>
-              
-              {/* Navigation Arrows - Mobile Only, aligned with tab name */}
-              <CarouselPrevious className="sm:hidden left-2 -top-12 bg-white border-2 border-gray-300 hover:bg-gray-50 disabled:opacity-30" />
-              <CarouselNext className="sm:hidden right-2 -top-12 bg-white border-2 border-gray-300 hover:bg-gray-50 disabled:opacity-30" />
-            </Carousel>
-          </div>
-
-          {/* Mobile Swipe Instruction - Moved above buttons */}
-          <div className="sm:hidden text-center text-sm text-gray-500 mt-2">
-            Swipe left or right to navigate between tabs
-          </div>
-
-          <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button variant="outline" onClick={() => setDomainSettingsOpen(false)} className="w-full sm:w-auto">
-              Cancel
-            </Button>
-            <Button onClick={() => {
-              setDomainSettingsOpen(false);
-              toast.success('Settings saved successfully!');
-            }} className="w-full sm:w-auto">
-              Save Changes
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Location Details Dialog */}
-      <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" aria-describedby="location-details-description">
-          <DialogHeader>
-            <DialogTitle>Location Details</DialogTitle>
-            <DialogDescription id="location-details-description">
-              Detailed statistics and performance for this location
-            </DialogDescription>
-          </DialogHeader>
-
-          {selectedLocation && (
-            <div className="space-y-6">
-              {/* Location Header */}
-              <div className="flex items-center justify-between pb-4 border-b">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gray-100 rounded-lg">
-                    <MapPin className="w-6 h-6 text-gray-700" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg">{selectedLocation.city}</h3>
-                    <p className="text-sm text-muted-foreground">{selectedLocation.state}</p>
-                  </div>
-                </div>
-                <Badge variant="default">{selectedLocation.status}</Badge>
-              </div>
-
-              {/* Statistics Grid */}
-              <div className="grid grid-cols-2 gap-4">
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Businesses</p>
-                        <p className="text-2xl font-semibold">{selectedLocation.businesses}</p>
-                      </div>
-                      <Package className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Active Deals</p>
-                        <p className="text-2xl font-semibold">{selectedLocation.activeDeals}</p>
-                      </div>
-                      <BarChart3 className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Revenue</p>
-                        <p className="text-2xl font-semibold">${selectedLocation.totalRevenue}</p>
-                      </div>
-                      <DollarSign className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Growth</p>
-                        <p className="text-2xl font-semibold text-green-600">+{selectedLocation.monthlyGrowth}%</p>
-                      </div>
-                      <TrendingUp className="w-8 h-8 text-green-600" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Performance Metrics */}
-              <div className="p-4 bg-muted rounded-lg">
-                <h5 className="font-semibold mb-3">Performance Metrics</h5>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Deals per Business</span>
-                    <span className="font-medium">
-                      {(selectedLocation.activeDeals / selectedLocation.businesses).toFixed(1)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Revenue per Business</span>
-                    <span className="font-medium">
-                      ${(selectedLocation.totalRevenue / selectedLocation.businesses).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Monthly Growth Rate</span>
-                    <span className="font-medium text-green-600">+{selectedLocation.monthlyGrowth}%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setLocationDialogOpen(false)}>
-              Close
-            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

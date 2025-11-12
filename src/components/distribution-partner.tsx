@@ -23,7 +23,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
       {/* Hero Section */}
       <div className="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24 sm:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="mb-6 text-white">Boost Community Satisfaction with Local Perks</h1>
+          <h1 className="mb-6 text-white text-[20px]">Boost Community Satisfaction with Local Perks</h1>
           <h2 className="mb-8 text-white">Exclusive Local Offers For Your Members</h2>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-10 text-lg">
@@ -102,7 +102,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
       {/* How It Works Section */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center mb-12">How It Works</h2>
+          <h2 className="text-center mb-12 text-[24px]">How It Works</h2>
           
           <div className="space-y-6">
             {/* Step 1 */}
@@ -189,7 +189,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
       {/* Why Partner With Us Section */}
       <div className="py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center mb-12">Why Partner With Us</h2>
+          <h2 className="text-center mb-12 text-[24px]">Why Partner With Us</h2>
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Enhance the Member Experience */}
@@ -258,7 +258,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
       {/* White Label Directory Section */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center mb-6">Upgrade to White Label Directory</h2>
+          <h2 className="text-center mb-6 text-[24px]">Upgrade to White Label Directory</h2>
           <p className="text-center text-muted-foreground text-lg mb-12 max-w-3xl mx-auto">
             Take your partnership to the next level with a private, branded version of Preferred Deals made exclusively for your members.
           </p>
@@ -397,7 +397,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
       {/* FAQ Section */}
       <div className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center mb-12">Frequently Asked Questions</h2>
+          <h2 className="text-center mb-12 text-[24px]">Frequently Asked Questions</h2>
 
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="item-1" className="bg-white border rounded-lg px-6">

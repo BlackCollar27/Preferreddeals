@@ -15,9 +15,10 @@ interface DistributorDetailAdminProps {
   onBack: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onPlatformSettings?: () => void;
 }
 
-export function DistributorDetailAdmin({ distributor, onBack, onEdit, onDelete }: DistributorDetailAdminProps) {
+export function DistributorDetailAdmin({ distributor, onBack, onEdit, onDelete, onPlatformSettings }: DistributorDetailAdminProps) {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Mock detailed distributor data
@@ -145,7 +146,13 @@ export function DistributorDetailAdmin({ distributor, onBack, onEdit, onDelete }
                 <p className="text-sm text-muted-foreground">Distribution Partner • {distributorDetails.contactPerson}</p>
               </div>
             </div>
-            <div className="flex gap-2 w-full sm:w-auto">
+            <div className="flex gap-2 w-full sm:w-auto flex-wrap">
+              {onPlatformSettings && (
+                <Button variant="outline" onClick={onPlatformSettings} className="flex-1 sm:flex-initial">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Platform Settings
+                </Button>
+              )}
               <Button variant="outline" onClick={onEdit} className="flex-1 sm:flex-initial">
                 <Edit className="w-4 h-4 mr-2" />
                 Edit

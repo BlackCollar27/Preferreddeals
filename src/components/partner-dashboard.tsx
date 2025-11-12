@@ -313,7 +313,7 @@ export function PartnerDashboard({ userName, onNavigate }: PartnerDashboardProps
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
       <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="mb-2">My Business Listings</h1>
+          <h1 className="mb-2 text-[20px]">My Business Listings</h1>
           <p className="text-muted-foreground text-sm sm:text-base">Manage your business presence and track performance</p>
         </div>
         <Button onClick={() => setShowNewBusiness(true)} className="w-full sm:w-auto">

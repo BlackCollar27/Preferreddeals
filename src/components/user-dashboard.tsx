@@ -393,7 +393,7 @@ export function UserDashboard({ userType, userName, savedDeals, onNavigate, onDa
             <DashboardSwitcher currentType={userType} onTypeChange={onDashboardTypeChange} />
           </div>
         )}
-        <DistributionPartnerDashboard userName={userName} />
+        <DistributionPartnerDashboard userName={userName} onNavigate={onNavigate} />
       </>
     );
   }

@@ -50,7 +50,7 @@ export function PartnerDashboardLogin({ onBack, onDistributionLogin, defaultTab 
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-8 pt-1 pb-8 lg:p-8 bg-white">
         <div className="w-full max-w-md">
           {/* Mobile Back Button */}
           <button 

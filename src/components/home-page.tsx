@@ -93,10 +93,10 @@ export function HomePage({ onNavigate, onViewListing }: HomePageProps) {
       {/* Hero Section */}
       <section className="relative bg-black text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="mb-3 sm:mb-4">
+          <h1 className="mb-3 sm:mb-4 text-[24px]">
             Discover Local Businesses & Exclusive Deals
           </h1>
-          <p className="text-base sm:text-lg text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto text-[16px]">
             Your community's trusted business directory with verified listings and special offers
           </p>
           
@@ -120,7 +120,7 @@ export function HomePage({ onNavigate, onViewListing }: HomePageProps) {
       <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8 sm:mb-10 text-center">
-            <h2 className="mb-2">Featured Listings</h2>
+            <h2 className="mb-2 text-[24px]">Featured Listings</h2>
             <p className="text-muted-foreground text-sm sm:text-base">Discover top-rated businesses in your area</p>
           </div>
           
@@ -240,7 +240,7 @@ export function HomePage({ onNavigate, onViewListing }: HomePageProps) {
       <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8 sm:mb-10">
-            <h2 className="mb-2">Browse by City</h2>
+            <h2 className="mb-2 text-[24px]">Browse by City</h2>
             <p className="text-muted-foreground text-sm sm:text-base">Find businesses in your area</p>
           </div>
           

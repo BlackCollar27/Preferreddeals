@@ -17,6 +17,7 @@ import { BusinessDetailAdmin } from './business-detail-admin';
 import { DistributorDetailAdmin } from './distributor-detail-admin';
 import { LocationDetailAdmin } from './location-detail-admin';
 import { UserDetailAdmin } from './user-detail-admin';
+import { WhiteLabelPlatformSettings } from './white-label-platform-settings';
 
 interface AdminDashboardProps {
   userName: string;
@@ -41,6 +42,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
   const [showDistributorDetail, setShowDistributorDetail] = useState(false);
   const [showLocationDetail, setShowLocationDetail] = useState(false);
   const [showUserDetail, setShowUserDetail] = useState(false);
+  const [showDistributorPlatformSettings, setShowDistributorPlatformSettings] = useState(false);
   
   // Pricing Management State
   const [monthlyPrice, setMonthlyPrice] = useState(49);
@@ -338,6 +340,16 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
     setDistributorDialogMode('edit'); // Show dialog for delete confirmation
   };
 
+  const handleShowPlatformSettings = () => {
+    setShowDistributorDetail(false);
+    setShowDistributorPlatformSettings(true);
+  };
+
+  const handleBackFromPlatformSettings = () => {
+    setShowDistributorPlatformSettings(false);
+    setShowDistributorDetail(true);
+  };
+
   const handleBusinessAction = (business: typeof recentBusinesses[0], mode: 'view' | 'edit' | 'delete') => {
     setSelectedBusiness(business);
     if (mode === 'view') {
@@ -473,7 +485,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
       <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="mb-2">Admin Dashboard</h1>
+          <h1 className="mb-2 text-[20px]">Admin Dashboard</h1>
           <p className="text-muted-foreground text-sm sm:text-base">Platform overview and management</p>
         </div>
         <Button variant="outline" onClick={() => setPlatformSettingsOpen(true)} className="w-full sm:w-auto">

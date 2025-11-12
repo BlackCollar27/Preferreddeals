@@ -22,10 +22,11 @@ import { ContactUs } from './components/contact-us';
 import { ListYourBusiness } from './components/list-your-business';
 import { ManageYourListing } from './components/manage-your-listing';
 import { PartnerDashboardLogin } from './components/partner-dashboard-login';
+import { WhiteLabelPlatformSettings } from './components/white-label-platform-settings';
 import { mockBusinesses } from './components/mock-data';
 import { Toaster } from './components/ui/sonner';
 
-type Page = 'home' | 'directory' | 'become-partner' | 'dashboard' | 'distribution-partner' | 'listing-detail' | 'login' | 'saved-deals' | 'user-dashboard' | 'terms' | 'privacy' | 'cookies' | 'about' | 'help' | 'pricing' | 'settings' | 'contact-us' | 'list-your-business' | 'manage-your-listing' | 'partner-dashboard-login';
+type Page = 'home' | 'directory' | 'become-partner' | 'dashboard' | 'distribution-partner' | 'listing-detail' | 'login' | 'saved-deals' | 'user-dashboard' | 'terms' | 'privacy' | 'cookies' | 'about' | 'help' | 'pricing' | 'settings' | 'contact-us' | 'list-your-business' | 'manage-your-listing' | 'partner-dashboard-login' | 'white-label-settings';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -282,6 +283,12 @@ export default function App() {
             setCurrentPage('user-dashboard');
           }}
           defaultTab={partnerLoginTab}
+        />
+      )}
+      {currentPage === 'white-label-settings' && (
+        <WhiteLabelPlatformSettings 
+          onBack={() => setCurrentPage('user-dashboard')}
+          partnerName={userName}
         />
       )}
       

@@ -14,7 +14,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
       {/* Hero Section */}
       <div className="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24 sm:py-32 bg-[rgba(0,0,0,0)]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="mb-6 text-white">Your Business in Front of More Customers</h1>
+          <h1 className="mb-6 text-white text-[32px]">Your Business in Front of More Customers</h1>
           <h2 className="mb-8 text-white">Without Paying for Ads</h2>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-10 text-lg">
@@ -44,7 +44,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
 
       {/* How It Works Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-center mb-12">How It Works</h2>
+        <h2 className="text-center mb-12 text-[24px]">How It Works</h2>
         
         <div className="space-y-6">
           {/* Step 1 */}
@@ -130,7 +130,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
       {/* Why Advertise With Us Section */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center mb-12">Why Advertise With Us</h2>
+          <h2 className="text-center mb-12 text-[24px]">Why Advertise With Us</h2>
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Local Reach */}
@@ -207,8 +207,8 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Basic Listing Section */}
           <div className="mb-16">
-            <h2 className="text-center mb-6">Basic Listing</h2>
-            <p className="text-center text-muted-foreground text-lg mb-8 max-w-3xl mx-auto">
+            <h2 className="text-center mb-6 text-[24px]">Basic Listing</h2>
+            <p className="text-center text-muted-foreground text-lg mb-8 max-w-3xl mx-auto text-[16px]">
               Get your business listed on Preferred Deals for free. Perfect for building real community connections through word of mouth.
             </p>
             
@@ -258,8 +258,8 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
           </div>
 
           {/* Featured Listing Pricing */}
-          <h2 className="text-center mb-6">Featured Listing Pricing</h2>
-          <p className="text-center text-muted-foreground text-lg mb-12 max-w-3xl mx-auto">
+          <h2 className="text-center mb-6 text-[24px]">Featured Listing Pricing</h2>
+          <p className="text-center text-muted-foreground text-lg mb-12 max-w-3xl mx-auto text-[16px]">
             Upgrade to a Featured Listing to add exclusive deals and promotions that appear on our NFC stands.
           </p>
 
@@ -381,7 +381,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
       {/* FAQ Section */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center mb-12">Frequently Asked Questions</h2>
+          <h2 className="text-center mb-12 text-[24px]">Frequently Asked Questions</h2>
 
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="item-1" className="bg-white border rounded-lg px-6">
