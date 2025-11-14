@@ -43,6 +43,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
   const [showLocationDetail, setShowLocationDetail] = useState(false);
   const [showUserDetail, setShowUserDetail] = useState(false);
   const [showDistributorPlatformSettings, setShowDistributorPlatformSettings] = useState(false);
+  const [showAdminPlatformSettings, setShowAdminPlatformSettings] = useState(false);
   
   // Pricing Management State
   const [monthlyPrice, setMonthlyPrice] = useState(49);
@@ -481,6 +482,15 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
     );
   }
 
+  if (showAdminPlatformSettings) {
+    return (
+      <WhiteLabelPlatformSettings
+        partnerName="Preferred Deals"
+        onBack={() => setShowAdminPlatformSettings(false)}
+      />
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
       <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -488,7 +498,7 @@ export function AdminDashboard({ userName }: AdminDashboardProps) {
           <h1 className="mb-2 text-[20px]">Admin Dashboard</h1>
           <p className="text-muted-foreground text-sm sm:text-base">Platform overview and management</p>
         </div>
-        <Button variant="outline" onClick={() => setPlatformSettingsOpen(true)} className="w-full sm:w-auto">
+        <Button variant="outline" onClick={() => setShowAdminPlatformSettings(true)} className="w-full sm:w-auto">
           <Settings className="w-4 h-4 mr-2" />
           Platform Settings
         </Button>
