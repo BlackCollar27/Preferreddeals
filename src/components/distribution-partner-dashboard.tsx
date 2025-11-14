@@ -47,6 +47,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate }: Distribut
     state: '',
     zip: '',
   });
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true); // Show welcome modal on first visit
   
   // Mock payment methods
   const [paymentMethods, setPaymentMethods] = useState([
@@ -1196,6 +1197,70 @@ export function DistributionPartnerDashboard({ userName, onNavigate }: Distribut
             <Button onClick={handleNfcStandsRequest}>
               <Package className="w-4 h-4 mr-2" />
               Submit Request
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Welcome Modal */}
+      <Dialog open={showWelcomeModal} onOpenChange={setShowWelcomeModal}>
+        <DialogContent className="sm:max-w-2xl" aria-describedby="welcome-modal-description">
+          <DialogHeader>
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-10 h-10 text-green-600" />
+              </div>
+            </div>
+            <DialogTitle className="text-center text-2xl">Congratulations!</DialogTitle>
+            <DialogDescription id="welcome-modal-description" className="text-center text-base">
+              You're now a Distribution Partner! Here's how to get the most out of your dashboard.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-6 py-4">
+            {/* Share Your Referral Link */}
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Share2 className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Share Your Referral Link</h3>
+                <p className="text-sm text-muted-foreground">
+                  Copy your unique referral link from the "Overview" tab and share it with communities, businesses, and potential partners to grow your network.
+                </p>
+              </div>
+            </div>
+
+            {/* Manage White-Label Platform */}
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Globe className="w-5 h-5 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Manage Your White-Label Platform</h3>
+                <p className="text-sm text-muted-foreground">
+                  If you have a white-label subscription, access platform settings to customize branding, approve businesses, and manage your directory from the Overview tab.
+                </p>
+              </div>
+            </div>
+
+            {/* Track Performance */}
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <BarChart3 className="w-5 h-5 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Track Performance & Analytics</h3>
+                <p className="text-sm text-muted-foreground">
+                  Monitor your referral link clicks, community growth, and earnings through the analytics dashboard. View detailed stats in the Overview section.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button onClick={() => setShowWelcomeModal(false)} className="w-full">
+              Got it, Let's Get Started!
             </Button>
           </DialogFooter>
         </DialogContent>

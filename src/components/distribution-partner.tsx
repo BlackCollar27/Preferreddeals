@@ -21,9 +21,9 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24 sm:py-32">
+      <div className="bg-black text-white py-24 sm:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="mb-6 text-white text-[20px]">Boost Community Satisfaction with Local Perks</h1>
+          <h1 className="mb-6 text-white text-[24px]">Boost Community Satisfaction with Local Perks</h1>
           <h2 className="mb-8 text-white">Exclusive Local Offers For Your Members</h2>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-10 text-lg">
@@ -62,7 +62,6 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3 sm:mb-2">
                   <h2 className="m-0">Free Partnership Program</h2>
-                  <Badge className="bg-green-600 w-fit">Always Free</Badge>
                 </div>
                 <p className="text-muted-foreground mb-4 sm:mb-6 text-sm sm:text-base">
                   Join the NFC-Powered Word Of Mouth Deal Network at no cost and receive complimentary Preferred Deals branded NFC stands for your community
@@ -278,11 +277,6 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
                 Annual
               </span>
             </div>
-            {isAnnual && (
-              <Badge variant="secondary" className="mt-3">
-                Save 2 Months
-              </Badge>
-            )}
           </div>
 
           {/* Premium Plan Card */}
@@ -307,11 +301,8 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
                       <span className="text-muted-foreground">/year</span>
                     </div>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Equivalent to ${annualMonthlyEquivalent.toFixed(2)}/month
+                      Get 2 months free when you sign up for the year
                     </p>
-                    <Badge variant="secondary" className="mt-3">
-                      Save ${savings} compared to monthly
-                    </Badge>
                   </>
                 ) : (
                   <>

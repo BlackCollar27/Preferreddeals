@@ -12,7 +12,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24 sm:py-32 bg-[rgba(0,0,0,0)]">
+      <div className="bg-black text-white py-24 sm:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="mb-6 text-white text-[32px]">Your Business in Front of More Customers</h1>
           <h2 className="mb-8 text-white">Without Paying for Ads</h2>
@@ -54,10 +54,10 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                 <div className="flex-1">
                   <h3 className="mb-2 flex items-center gap-2">
                     <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white text-sm font-semibold">1</span>
-                    Step 1: Submit Your Deal
+                    Step 1: Submit Your Business Info
                   </h3>
                   <p className="text-muted-foreground">
-                    Share your promotion along with your business name, contact info, website or landing page, and any coupon code you'd like featured. All listings are reviewed and vetted by our team before publishing.
+                    Share your business name, contact info, website, and a brief description. All listings are reviewed and vetted by our team before publishing to ensure quality and authenticity.
                   </p>
                 </div>
                 <ChevronRight className="text-muted-foreground flex-shrink-0" />
@@ -93,7 +93,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                     Step 3: Locals Tap to Browse
                   </h3>
                   <p className="text-muted-foreground">
-                    When someone taps the NFC stand, it opens the Preferred Deals directory homepage. Community members can then browse all active offers and discover your business.
+                    When someone taps an NFC stand or uses their NFC keychain, it opens the Preferred Deals directory homepage. Community members can then browse all active listings and discover your business.
                   </p>
                 </div>
                 <ChevronRight className="text-muted-foreground flex-shrink-0" />
@@ -111,7 +111,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                     Step 4: You Get Real Customers
                   </h3>
                   <p className="text-muted-foreground">
-                    People can click through to your website, redeem your offer, or visit in person.
+                    People can click through to your website, see your contact information, or visit in person.
                   </p>
                 </div>
                 <ChevronRight className="text-muted-foreground flex-shrink-0" />
@@ -214,11 +214,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
             
             <Card className="max-w-2xl mx-auto border-2">
               <CardHeader className="text-center pb-8">
-                <CardTitle className="mb-2">Basic Listing</CardTitle>
                 <div className="text-4xl font-bold mb-2">FREE</div>
-                <div className="inline-block bg-green-600 text-white px-4 py-1 rounded-full text-sm font-semibold mb-3">
-                  ALWAYS FREE
-                </div>
                 <CardDescription>Get your business listed with essential information</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -281,15 +277,19 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">Business Profile Listing</p>
+                  <p className="text-sm">Featured Homepage Placement</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">Deal Management</p>
+                  <p className="text-sm">Unlimited Deal Updates</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">NFC Stand Placement</p>
+                  <p className="text-sm">Analytics Dashboard</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm">Premium Support</p>
                 </div>
               </CardContent>
             </Card>
@@ -314,7 +314,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">Business Profile Listing</p>
+                  <p className="text-sm">Featured Homepage Placement</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -322,11 +322,11 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">NFC Stand Placement</p>
+                  <p className="text-sm">Analytics Dashboard</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">Priority Support</p>
+                  <p className="text-sm">Premium Support</p>
                 </div>
               </CardContent>
             </Card>
@@ -348,7 +348,7 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">Featured Business Profile</p>
+                  <p className="text-sm">Featured Homepage Placement</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -356,15 +356,11 @@ export function ListYourBusiness({ onBack, onGetStarted }: ListYourBusinessProps
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">Premium NFC Placement</p>
+                  <p className="text-sm">Analytics Dashboard</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <p className="text-sm">Premium Support</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">Analytics Dashboard</p>
                 </div>
               </CardContent>
             </Card>

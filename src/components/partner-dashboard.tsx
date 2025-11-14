@@ -39,6 +39,7 @@ export function PartnerDashboard({ userName, onNavigate }: PartnerDashboardProps
     '2': false,
   });
   const [showAddPayment, setShowAddPayment] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true); // Show welcome modal on first visit
   
   // Payment confirmation state
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
@@ -1764,6 +1765,70 @@ export function PartnerDashboard({ userName, onNavigate }: PartnerDashboardProps
             <Button onClick={handleConfirmPayment}>
               <Check className="w-4 h-4 mr-2" />
               Confirm Payment - ${premiumPlans.find(p => p.id === selectedPlan)?.price}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Welcome Modal */}
+      <Dialog open={showWelcomeModal} onOpenChange={setShowWelcomeModal}>
+        <DialogContent className="sm:max-w-2xl" aria-describedby="welcome-modal-description">
+          <DialogHeader>
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-10 h-10 text-green-600" />
+              </div>
+            </div>
+            <DialogTitle className="text-center text-2xl">Congratulations!</DialogTitle>
+            <DialogDescription id="welcome-modal-description" className="text-center text-base">
+              Your listing has been created successfully. Here's how to get the most out of your dashboard.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-6 py-4">
+            {/* Edit Your Listing */}
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Edit className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Edit Your Listing</h3>
+                <p className="text-sm text-muted-foreground">
+                  Click the "Edit" button on any listing card to update your business information, add photos, set your hours, and manage your deals.
+                </p>
+              </div>
+            </div>
+
+            {/* View Analytics */}
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <BarChart3 className="w-5 h-5 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">View Business Analytics</h3>
+                <p className="text-sm text-muted-foreground">
+                  Navigate to the "Analytics" tab to see detailed insights about your listing performance, including views, clicks, and engagement metrics.
+                </p>
+              </div>
+            </div>
+
+            {/* Upgrade to Premium */}
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-5 h-5 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Upgrade to Premium</h3>
+                <p className="text-sm text-muted-foreground">
+                  Unlock featured homepage placement, unlimited deals, and advanced analytics by upgrading to a Premium listing in the "Billing" tab.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button onClick={() => setShowWelcomeModal(false)} className="w-full">
+              Got it, Let's Get Started!
             </Button>
           </DialogFooter>
         </DialogContent>
