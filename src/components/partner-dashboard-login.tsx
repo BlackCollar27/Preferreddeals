@@ -9,7 +9,7 @@ import logoImage from 'figma:asset/dd3bfa837dfa92a5643677141b8779a2931011b6.png'
 
 interface PartnerDashboardLoginProps {
   onBack: () => void;
-  onDistributionLogin: () => void;
+  onDistributionLogin: (isSignup: boolean) => void;
   defaultTab?: 'login' | 'signup';
 }
 
@@ -18,13 +18,13 @@ export function PartnerDashboardLogin({ onBack, onDistributionLogin, defaultTab 
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onDistributionLogin();
+    onDistributionLogin(false);
   };
 
   const handleSignupSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real app, this would create the account then log in
-    onDistributionLogin();
+    onDistributionLogin(true);
   };
 
   return (
@@ -264,12 +264,12 @@ export function PartnerDashboardLogin({ onBack, onDistributionLogin, defaultTab 
                 </div>
 
                 <Button type="submit" className="w-full h-12 text-base bg-black hover:bg-gray-800">
-                  Submit Application
+                  Create Account
                 </Button>
               </form>
 
               <p className="text-center text-sm text-muted-foreground">
-                Your application will be reviewed within 2-3 business days.
+                Your application will be reviewed within 2-3 business days. You'll receive dashboard access immediately.
               </p>
             </TabsContent>
           </Tabs>

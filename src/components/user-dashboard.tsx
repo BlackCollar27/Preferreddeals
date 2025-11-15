@@ -22,9 +22,10 @@ interface UserDashboardProps {
   onToggleSave?: (businessId: string) => void;
   onLogout?: () => void;
   isNewUser?: boolean;
+  distributionApprovalStatus?: 'pending' | 'approved' | 'rejected';
 }
 
-export function UserDashboard({ userType, userName, savedDeals, onNavigate, onDashboardTypeChange, isUserLoggedIn = true, onToggleSave, onLogout, isNewUser = false }: UserDashboardProps) {
+export function UserDashboard({ userType, userName, savedDeals, onNavigate, onDashboardTypeChange, isUserLoggedIn = true, onToggleSave, onLogout, isNewUser = false, distributionApprovalStatus = 'approved' }: UserDashboardProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('month');
   const [selectedRecommendation, setSelectedRecommendation] = useState<string | null>(null);
   const [showWelcomeModal, setShowWelcomeModal] = useState(isNewUser);
@@ -502,7 +503,7 @@ export function UserDashboard({ userType, userName, savedDeals, onNavigate, onDa
             <DashboardSwitcher currentType={userType} onTypeChange={onDashboardTypeChange} />
           </div>
         )}
-        <DistributionPartnerDashboard userName={userName} onNavigate={onNavigate} onLogout={onLogout} />
+        <DistributionPartnerDashboard userName={userName} onNavigate={onNavigate} onLogout={onLogout} approvalStatus={distributionApprovalStatus} />
       </>
     );
   }

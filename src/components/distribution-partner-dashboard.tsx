@@ -1,6 +1,6 @@
 import { WhiteLabelPlatform } from './white-label-platform-new';
 import { useState } from 'react';
-import { Users, Award, DollarSign, TrendingUp, Copy, Share2, Gift, Globe, ArrowRight, MapPin, Package, BarChart3, Eye, Map, ChevronLeft, ChevronRight, CheckCircle, Search, CreditCard, Plus, Check, Sparkles, Star, LogOut } from 'lucide-react';
+import { Users, Award, DollarSign, TrendingUp, Copy, Share2, Gift, Globe, ArrowRight, MapPin, Package, BarChart3, Eye, Map, ChevronLeft, ChevronRight, CheckCircle, Search, CreditCard, Plus, Check, Sparkles, Star, LogOut, X } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
@@ -17,9 +17,10 @@ interface DistributionPartnerDashboardProps {
   userName: string;
   onNavigate?: (page: string) => void;
   onLogout?: () => void;
+  approvalStatus?: 'pending' | 'approved' | 'rejected';
 }
 
-export function DistributionPartnerDashboard({ userName, onNavigate, onLogout }: DistributionPartnerDashboardProps) {
+export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, approvalStatus = 'approved' }: DistributionPartnerDashboardProps) {
   const [showWhiteLabel, setShowWhiteLabel] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof partnerLocations[0] | null>(null);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
@@ -104,6 +105,242 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout }:
 
   if (showWhiteLabel) {
     return <WhiteLabelPlatform onBack={() => setShowWhiteLabel(false)} partnerName={userName} onNavigate={onNavigate} />;
+  }
+
+  // Application Pending Screen
+  if (approvalStatus === 'pending') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <Card className="max-w-2xl w-full">
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              {/* Icon */}
+              <div className="flex justify-center">
+                <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-10 h-10 text-yellow-600" />
+                </div>
+              </div>
+
+              {/* Title */}
+              <div>
+                <h1 className="mb-2">Application Under Review</h1>
+                <p className="text-muted-foreground text-lg">
+                  Welcome, {userName}!
+                </p>
+              </div>
+
+              {/* Status Message */}
+              <Card className="bg-yellow-50 border-yellow-200">
+                <CardContent className="p-6">
+                  <h3 className="mb-2 flex items-center gap-2 justify-center">
+                    <Package className="w-5 h-5 text-yellow-600" />
+                    Application Status: Pending
+                  </h3>
+                  <p className="text-muted-foreground text-center">
+                    Your distribution partner application is currently being reviewed by our team. 
+                    We typically process applications within 2-3 business days.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* What's Next Section */}
+              <div className="text-left space-y-4">
+                <h3 className="text-center">What happens next?</h3>
+                
+                <div className="space-y-3">
+                  <div className="flex gap-3 items-start">
+                    <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold">
+                      1
+                    </div>
+                    <div>
+                      <p className="font-medium">Application Review</p>
+                      <p className="text-sm text-muted-foreground">
+                        Our team is reviewing your organization details and community information
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-start">
+                    <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold">
+                      2
+                    </div>
+                    <div>
+                      <p className="font-medium">Email Notification</p>
+                      <p className="text-sm text-muted-foreground">
+                        You'll receive an email once your application is approved
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-start">
+                    <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold">
+                      3
+                    </div>
+                    <div>
+                      <p className="font-medium">Dashboard Access</p>
+                      <p className="text-sm text-muted-foreground">
+                        Full access to your distribution partner dashboard and all features
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-start">
+                    <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold">
+                      4
+                    </div>
+                    <div>
+                      <p className="font-medium">Free NFC Materials</p>
+                      <p className="text-sm text-muted-foreground">
+                        Request your free Preferred Deals branded NFC materials (keychains & stands) for your community
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Benefits Reminder */}
+              <Card className="bg-gray-50 border-gray-200">
+                <CardContent className="p-6">
+                  <h4 className="font-semibold mb-3 flex items-center gap-2 justify-center">
+                    <Gift className="w-5 h-5 text-green-600" />
+                    What's Included
+                  </h4>
+                  <div className="grid sm:grid-cols-2 gap-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <span>Free NFC materials (keychains & stands)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <span>No setup fees</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <span>Full business directory</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <span>No monthly costs</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Actions */}
+              <div className="flex gap-3 justify-center pt-4">
+                {onLogout && (
+                  <Button variant="outline" onClick={onLogout}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </Button>
+                )}
+              </div>
+
+              {/* Contact Info */}
+              <p className="text-sm text-muted-foreground pt-4 border-t">
+                Questions about your application? Contact us at{' '}
+                <a href="mailto:info@preferred.deals" className="text-primary hover:underline">
+                  info@preferred.deals
+                </a>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Application Rejected Screen
+  if (approvalStatus === 'rejected') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <Card className="max-w-2xl w-full">
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              {/* Icon */}
+              <div className="flex justify-center">
+                <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
+                  <X className="w-10 h-10 text-red-600" />
+                </div>
+              </div>
+
+              {/* Title */}
+              <div>
+                <h1 className="mb-2">Application Not Approved</h1>
+                <p className="text-muted-foreground text-lg">
+                  Thank you for your interest, {userName}
+                </p>
+              </div>
+
+              {/* Status Message */}
+              <Card className="bg-red-50 border-red-200">
+                <CardContent className="p-6">
+                  <p className="text-muted-foreground text-center">
+                    Unfortunately, we're unable to approve your distribution partner application at this time. 
+                    This decision is based on our current partnership criteria and community coverage.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Next Steps */}
+              <div className="text-left space-y-4">
+                <h3 className="text-center">What you can do</h3>
+                
+                <div className="space-y-3">
+                  <div className="flex gap-3 items-start">
+                    <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-medium">Reapply in the Future</p>
+                      <p className="text-sm text-muted-foreground">
+                        You're welcome to reapply after 6 months if your circumstances change
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-start">
+                    <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-medium">Explore Business Partnership</p>
+                      <p className="text-sm text-muted-foreground">
+                        Consider joining as a business partner to offer deals to local communities
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-start">
+                    <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-medium">Contact Us</p>
+                      <p className="text-sm text-muted-foreground">
+                        Reach out if you have questions about this decision
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 justify-center pt-4">
+                {onLogout && (
+                  <Button onClick={onLogout}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </Button>
+                )}
+              </div>
+
+              {/* Contact Info */}
+              <p className="text-sm text-muted-foreground pt-4 border-t">
+                Questions? Contact us at{' '}
+                <a href="mailto:info@preferred.deals" className="text-primary hover:underline">
+                  info@preferred.deals
+                </a>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   const recentReferrals = [
@@ -363,10 +600,6 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout }:
                     <span className="text-sm">Manage Platform</span>
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
-                  <Button variant="outline" className="flex-1">
-                    <Share2 className="w-4 h-4 mr-2" />
-                    <span className="text-sm">Share Platform Link</span>
-                  </Button>
                 </div>
 
                 <div className="p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -398,13 +631,9 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout }:
                 </Button>
               </div>
               <div className="flex flex-col sm:flex-row gap-2">
-                <Button variant="outline" className="flex-1 text-xs sm:text-sm">
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share on Social Media
-                </Button>
                 <Button variant="outline" className="flex-1 text-xs sm:text-sm" onClick={() => setShowNfcStandsDialog(true)}>
                   <Package className="w-4 h-4 mr-2" />
-                  Request NFC Stands
+                  Request NFC Materials
                 </Button>
               </div>
             </CardContent>
@@ -1028,7 +1257,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout }:
         </DialogContent>
       </Dialog>
 
-      {/* Request NFC Stands Dialog */}
+      {/* Request NFC Materials Dialog */}
       <Dialog open={showNfcStandsDialog} onOpenChange={setShowNfcStandsDialog}>
         <DialogContent className="sm:max-w-lg" aria-describedby="nfc-stands-description">
           <DialogHeader>
@@ -1047,7 +1276,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout }:
             {/* NFC Stands Quantity */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="nfc-stands-quantity">Preferred Deals NFC Stands</Label>
+                <Label htmlFor="nfc-stands-quantity">NFC Stands</Label>
                 <Badge variant="outline">Max: 10</Badge>
               </div>
               <div className="flex items-center gap-3">
@@ -1262,7 +1491,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout }:
               <div>
                 <h3 className="font-semibold mb-1">Request Free NFC Materials</h3>
                 <p className="text-sm text-muted-foreground">
-                  Get free NFC stands and keychains to help distribute and promote Preferred Deals in your community from the Overview tab.
+                  Get free NFC materials (keychains & stands) to help distribute and promote Preferred Deals in your community from the Overview tab.
                 </p>
               </div>
             </div>

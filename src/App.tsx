@@ -61,6 +61,9 @@ export default function App() {
   // Track previous page for back navigation
   const [previousPage, setPreviousPage] = useState<Page>('home');
   
+  // Distribution partner approval status
+  const [distributionApprovalStatus, setDistributionApprovalStatus] = useState<'pending' | 'approved' | 'rejected'>('approved');
+  
   // Theme state - removed, no longer using dark mode
 
   const handleBusinessSignup = (id: string) => {
@@ -221,6 +224,7 @@ export default function App() {
           isUserLoggedIn={isUserLoggedIn}
           onToggleSave={handleToggleSaveDeal}
           onLogout={handleUserLogout}
+          distributionApprovalStatus={distributionApprovalStatus}
         />
       )}
       {currentPage === 'settings' && (
@@ -280,10 +284,13 @@ export default function App() {
       {currentPage === 'partner-dashboard-login' && (
         <PartnerDashboardLogin 
           onBack={() => setCurrentPage('directory')} 
-          onDistributionLogin={() => {
+          onDistributionLogin={(isSignup) => {
             setUserType('distribution');
             setUserName('Distribution Partner');
             setIsUserLoggedIn(true);
+            // TEMPORARY: Set to approved for development so we can see the full dashboard
+            // TODO: Change back to: setDistributionApprovalStatus(isSignup ? 'pending' : 'approved');
+            setDistributionApprovalStatus('approved');
             setCurrentPage('user-dashboard');
           }}
           defaultTab={partnerLoginTab}
