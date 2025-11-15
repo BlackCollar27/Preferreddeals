@@ -1457,19 +1457,6 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
           </DialogHeader>
           
           <div className="space-y-6 py-4">
-            {/* Share Your Referral Link */}
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Share2 className="w-5 h-5 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">Share Your Referral Link</h3>
-                <p className="text-sm text-muted-foreground">
-                  Copy your unique referral link from the "Overview" tab and share it with communities, businesses, and potential partners to grow your network.
-                </p>
-              </div>
-            </div>
-
             {/* Track Performance */}
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
