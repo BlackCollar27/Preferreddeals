@@ -488,6 +488,7 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
       <WhiteLabelPlatformSettings
         partnerName="Preferred Deals"
         onBack={() => setShowAdminPlatformSettings(false)}
+        isAdmin={true}
       />
     );
   }
@@ -2514,8 +2515,10 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
           </DialogHeader>
 
           <Tabs defaultValue="general" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="locations">Locations</TabsTrigger>
+              <TabsTrigger value="categories">Categories</TabsTrigger>
               <TabsTrigger value="policies">Policies</TabsTrigger>
               <TabsTrigger value="advanced">Advanced</TabsTrigger>
             </TabsList>
@@ -2550,6 +2553,121 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
                     </p>
                   </div>
                   <Switch defaultChecked />
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="locations" className="space-y-4 pt-4">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-medium">Manage Locations</h3>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Add, edit, or remove service locations
+                    </p>
+                  </div>
+                  <Button size="sm" onClick={() => toast.success('Add location feature coming soon')}>
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Add Location
+                  </Button>
+                </div>
+
+                <div className="border rounded-lg">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Location</TableHead>
+                        <TableHead>Businesses</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {locations.slice(0, 5).map((location) => (
+                        <TableRow key={location.id}>
+                          <TableCell>
+                            <div className="font-medium">{location.city}, {location.state}</div>
+                          </TableCell>
+                          <TableCell>{location.totalBusinesses}</TableCell>
+                          <TableCell>
+                            <Badge variant={location.status === 'Active' ? 'default' : 'secondary'}>
+                              {location.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem>
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="text-destructive">
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="categories" className="space-y-4 pt-4">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-medium">Manage Categories</h3>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Add, edit, or remove business categories
+                    </p>
+                  </div>
+                  <Button size="sm" onClick={() => toast.success('Add category feature coming soon')}>
+                    <Package className="w-4 h-4 mr-2" />
+                    Add Category
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {['Dining & Restaurants', 'Retail & Shopping', 'Health & Wellness', 'Services', 'Entertainment', 'Automotive', 'Home & Garden', 'Beauty & Personal Care'].map((category, index) => (
+                    <Card key={index}>
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">{category}</p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {Math.floor(Math.random() * 500 + 100)} businesses
+                            </p>
+                          </div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive">
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
               </div>
             </TabsContent>

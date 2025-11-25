@@ -15,10 +15,11 @@ import { WhiteLabelCustomization } from './white-label-customization';
 interface WhiteLabelPlatformSettingsProps {
   onBack: () => void;
   partnerName: string;
+  isAdmin?: boolean;
 }
 
-export function WhiteLabelPlatformSettings({ onBack, partnerName }: WhiteLabelPlatformSettingsProps) {
-  const [activeTab, setActiveTab] = useState('domain');
+export function WhiteLabelPlatformSettings({ onBack, partnerName, isAdmin = false }: WhiteLabelPlatformSettingsProps) {
+  const [activeTab, setActiveTab] = useState(isAdmin ? 'branding' : 'domain');
   const [settingsCarouselApi, setSettingsCarouselApi] = useState<any>();
   const [settingsTabIndex, setSettingsTabIndex] = useState(0);
   const [enableCommunityAccounts, setEnableCommunityAccounts] = useState(true);
@@ -75,12 +76,17 @@ export function WhiteLabelPlatformSettings({ onBack, partnerName }: WhiteLabelPl
     { id: 3, city: 'Chicago', state: 'IL', businesses: 28 },
   ]);
 
-  const settingsTabs = [
+  const allSettingsTabs = [
     { value: 'domain', label: 'Domain' },
     { value: 'branding', label: 'Branding' },
     { value: 'customization', label: 'Customization' },
     { value: 'settings', label: 'Settings' },
   ];
+  
+  // Filter out domain tab for admin users
+  const settingsTabs = isAdmin 
+    ? allSettingsTabs.filter(tab => tab.value !== 'domain')
+    : allSettingsTabs;
 
   const handleSaveSettings = () => {
     toast.success('Platform settings saved successfully!');
@@ -184,40 +190,46 @@ export function WhiteLabelPlatformSettings({ onBack, partnerName }: WhiteLabelPl
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Button variant="ghost" onClick={onBack} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to White-Label Platform
+          {isAdmin ? 'Back to Admin Dashboard' : 'Back to White-Label Platform'}
         </Button>
 
         {/* Header */}
         <div className="mb-8">
           <h1 className="mb-2">Platform Settings</h1>
-          <p className="text-muted-foreground">Configure your white-label platform settings, branding, and customization</p>
+          <p className="text-muted-foreground">
+            {isAdmin 
+              ? 'Configure global platform settings, branding, and features' 
+              : 'Configure your white-label platform settings, branding, and customization'}
+          </p>
         </div>
 
-        {/* Platform Info Card */}
-        <Card className="bg-gradient-to-br from-gray-900 to-gray-800 text-white mb-8">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Globe className="w-5 h-5 text-gray-400" />
-                  <p className="text-sm text-gray-400">Your Platform URL</p>
+        {/* Platform Info Card - Only show for white-label, not admin */}
+        {!isAdmin && (
+          <Card className="bg-gradient-to-br from-gray-900 to-gray-800 text-white mb-8">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Globe className="w-5 h-5 text-gray-400" />
+                    <p className="text-sm text-gray-400">Your Platform URL</p>
+                  </div>
+                  <p className="text-white font-medium">{partnerData.domain}</p>
+                  {partnerData.customDomain && (
+                    <p className="text-sm text-gray-400 mt-1">{partnerData.customDomain}</p>
+                  )}
                 </div>
-                <p className="text-white font-medium">{partnerData.domain}</p>
-                {partnerData.customDomain && (
-                  <p className="text-sm text-gray-400 mt-1">{partnerData.customDomain}</p>
-                )}
+                <Button onClick={handleSaveSettings} className="bg-white text-black hover:bg-gray-100">
+                  Save All Changes
+                </Button>
               </div>
-              <Button onClick={handleSaveSettings} className="bg-white text-black hover:bg-gray-100">
-                Save All Changes
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Settings Tabs - Desktop */}
         <div className="hidden sm:block">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 bg-gray-100">
+            <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3' : 'grid-cols-4'} bg-gray-100`}>
               {settingsTabs.map((tab) => (
                 <TabsTrigger key={tab.value} value={tab.value}>
                   {tab.label}
