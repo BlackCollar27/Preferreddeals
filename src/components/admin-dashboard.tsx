@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Package, Users, DollarSign, BarChart3, Settings, TrendingUp, AlertCircle, CheckCircle, Clock, Search, Filter, MoreVertical, Eye, Edit, Trash2, Mail, Calendar, Heart, X, MapPin, Phone, Globe, Map, ChevronLeft, ChevronRight, CreditCard, LogOut } from 'lucide-react';
+import { Package, Users, DollarSign, BarChart3, Settings, TrendingUp, AlertCircle, CheckCircle, Clock, Search, Filter, MoreVertical, Eye, Edit, Trash2, Mail, Calendar, Heart, X, MapPin, Phone, Globe, Map, CreditCard, LogOut } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Button } from './ui/button';
@@ -528,129 +528,148 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
       )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-        {/* Slider Navigation */}
-        <div className="space-y-3 sm:space-y-4">
-          {/* Tab Name with Arrows */}
-          <div className="relative text-center">
-            <h2 className="text-xl sm:text-2xl capitalize">{activeTab === 'approvals' ? 'Approvals' : activeTab}</h2>
-            
-            {/* Navigation Arrows */}
-            <button
-              onClick={() => {
-                const tabs = ['overview', 'businesses', 'users', 'locations', 'distributors', 'approvals', 'pricing'];
-                const currentIndex = tabs.indexOf(activeTab);
-                const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
-                setActiveTab(tabs[prevIndex]);
-              }}
-              className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 size-8 sm:size-10 rounded-full bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-900 flex items-center justify-center shadow-sm transition-all"
-              aria-label="Previous section"
-            >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            
-            <button
-              onClick={() => {
-                const tabs = ['overview', 'businesses', 'users', 'locations', 'distributors', 'approvals', 'pricing'];
-                const currentIndex = tabs.indexOf(activeTab);
-                const nextIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
-                setActiveTab(tabs[nextIndex]);
-              }}
-              className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 size-8 sm:size-10 rounded-full bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-900 flex items-center justify-center shadow-sm transition-all"
-              aria-label="Next section"
-            >
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-          </div>
+        {/* Tab Navigation */}
+        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7 gap-2">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="businesses">Businesses</TabsTrigger>
+          <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="locations">Locations</TabsTrigger>
+          <TabsTrigger value="distributors">Distributors</TabsTrigger>
+          <TabsTrigger value="approvals">Approvals</TabsTrigger>
+          <TabsTrigger value="pricing">Pricing</TabsTrigger>
+        </TabsList>
 
-          {/* Carousel Indicators (Dots) */}
-          <div className="flex justify-center gap-2">
-            {['overview', 'businesses', 'users', 'locations', 'distributors', 'approvals', 'pricing'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`h-2 rounded-full transition-all ${
-                  tab === activeTab 
-                    ? 'w-8 bg-black' 
-                    : 'w-2 bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to ${tab}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        <TabsContent value="overview" className="space-y-4 sm:space-y-6">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <TabsContent value="overview" className="space-y-6">
+          {/* Key Metrics - 4 Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-2 sm:mb-4">
-                  <Package className="w-6 h-6 sm:w-8 sm:h-8 text-gray-900" />
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Package className="w-5 h-5 text-muted-foreground" />
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Businesses</p>
-                <p className="text-2xl sm:text-3xl">{platformStats.totalBusinesses.toLocaleString()}</p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">+12% this month</p>
+                <div className="text-3xl mb-1">{platformStats.totalBusinesses.toLocaleString()}</div>
+                <p className="text-sm text-muted-foreground">Total Businesses</p>
+                <p className="text-xs text-muted-foreground mt-1">+12% this month</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-2 sm:mb-4">
-                  <Users className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700" />
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="w-5 h-5 text-muted-foreground" />
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Users</p>
-                <p className="text-2xl sm:text-3xl">{platformStats.totalUsers.toLocaleString()}</p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">+8% this month</p>
+                <div className="text-3xl mb-1">{platformStats.totalUsers.toLocaleString()}</div>
+                <p className="text-sm text-muted-foreground">Total Users</p>
+                <p className="text-xs text-muted-foreground mt-1">+8% this month</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-2 sm:mb-4">
-                  <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-gray-900" />
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <DollarSign className="w-5 h-5 text-muted-foreground" />
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">Monthly Revenue</p>
-                <p className="text-2xl sm:text-3xl">${platformStats.monthlyRevenue.toLocaleString()}</p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">+15% this month</p>
+                <div className="text-3xl mb-1">${platformStats.monthlyRevenue.toLocaleString()}</div>
+                <p className="text-sm text-muted-foreground">Monthly Revenue</p>
+                <p className="text-xs text-muted-foreground mt-1">+15% this month</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-2 sm:mb-4">
-                  <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700" />
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Clock className="w-5 h-5 text-orange-500" />
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">Active Deals</p>
-                <p className="text-2xl sm:text-3xl">{platformStats.activeDeals.toLocaleString()}</p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">+5% this month</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-2 sm:mb-4">
-                  <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700" />
-                </div>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">Active Distributors</p>
-                <p className="text-2xl sm:text-3xl">{platformStats.activeDistributors}</p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">+18% this month</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-2 sm:mb-4">
-                  <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600" />
-                </div>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-1">Pending Approvals</p>
-                <p className="text-2xl sm:text-3xl">{platformStats.pendingApprovals}</p>
-                <Button size="sm" className="mt-2 w-full text-xs sm:text-sm" variant="outline" onClick={() => setActiveTab('approvals')}>Review</Button>
+                <div className="text-3xl mb-1">{platformStats.pendingApprovals}</div>
+                <p className="text-sm text-muted-foreground">Pending Approvals</p>
+                <p className="text-xs text-muted-foreground mt-1">Requires attention</p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Recent Activity */}
-          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
+          {/* Platform Statistics */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Platform Statistics</CardTitle>
+                <CardDescription>Additional platform metrics</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between py-3 border-b">
+                  <div className="flex items-center gap-3">
+                    <BarChart3 className="w-5 h-5 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm">Active Deals</p>
+                      <p className="text-xs text-muted-foreground">Currently published</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl">{platformStats.activeDeals.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">+5% this month</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between py-3 border-b">
+                  <div className="flex items-center gap-3">
+                    <TrendingUp className="w-5 h-5 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm">Active Distributors</p>
+                      <p className="text-xs text-muted-foreground">Partner organizations</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl">{platformStats.activeDistributors}</p>
+                    <p className="text-xs text-muted-foreground">+18% this month</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between py-3">
+                  <div className="flex items-center gap-3">
+                    <Map className="w-5 h-5 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm">Active Locations</p>
+                      <p className="text-xs text-muted-foreground">Cities served</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl">{locations.length}</p>
+                    <p className="text-xs text-muted-foreground">Nationwide</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+                <CardDescription>Latest platform actions</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-start gap-3 p-3 border rounded-lg">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm">New business approved</p>
+                    <p className="text-xs text-muted-foreground truncate">Urban Cuts Barbershop - 5 min ago</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 border rounded-lg">
+                  <Users className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm">New user registered</p>
+                    <p className="text-xs text-muted-foreground truncate">Alex Thompson - 12 min ago</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 border rounded-lg">
+                  <TrendingUp className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm">Distributor application</p>
+                    <p className="text-xs text-muted-foreground truncate">Community Connect LLC - 1 hour ago</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Recent Businesses & Approvals */}
+          <div className="grid lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader className="p-4 sm:p-6">
                 <CardTitle className="text-base sm:text-lg">Recent Businesses</CardTitle>
@@ -1581,14 +1600,14 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
 
       {/* User Details/Edit/Suspend Dialog */}
       <Dialog open={userDialogMode !== null} onOpenChange={(open) => !open && handleCloseUserDialog()}>
-        <DialogContent className="sm:max-w-[600px]" aria-describedby="user-dialog-description">
+        <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>
               {userDialogMode === 'view' && 'User Profile'}
               {userDialogMode === 'edit' && 'Edit User'}
               {userDialogMode === 'suspend' && 'Suspend User'}
             </DialogTitle>
-            <DialogDescription id="user-dialog-description">
+            <DialogDescription>
               {userDialogMode === 'view' && 'View detailed user information'}
               {userDialogMode === 'edit' && 'Update user account details'}
               {userDialogMode === 'suspend' && 'Are you sure you want to suspend this user?'}
@@ -1702,14 +1721,14 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
 
       {/* Approval Details/Approve/Reject Dialog */}
       <Dialog open={approvalDialogMode !== null} onOpenChange={(open) => !open && handleCloseApprovalDialog()}>
-        <DialogContent className="sm:max-w-[700px]" aria-describedby="approval-dialog-description">
+        <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
             <DialogTitle>
               {approvalDialogMode === 'view' && 'Approval Details'}
               {approvalDialogMode === 'approve' && 'Approve Request'}
               {approvalDialogMode === 'reject' && 'Reject Request'}
             </DialogTitle>
-            <DialogDescription id="approval-dialog-description">
+            <DialogDescription>
               {approvalDialogMode === 'view' && 'Review the details of this pending approval'}
               {approvalDialogMode === 'approve' && 'Confirm approval of this request'}
               {approvalDialogMode === 'reject' && 'Provide a reason for rejecting this request'}
@@ -1886,13 +1905,13 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
 
       {/* Distributor Details/Edit Dialog */}
       <Dialog open={distributorDialogMode !== null} onOpenChange={(open) => !open && handleCloseDistributorDialog()}>
-        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto" aria-describedby="distributor-dialog-description">
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {distributorDialogMode === 'view' && 'Distributor Details'}
               {distributorDialogMode === 'edit' && 'Edit Distributor'}
             </DialogTitle>
-            <DialogDescription id="distributor-dialog-description">
+            <DialogDescription>
               {distributorDialogMode === 'view' && 'View detailed distributor and white-label platform information'}
               {distributorDialogMode === 'edit' && 'Update distributor account and platform settings'}
             </DialogDescription>
@@ -2163,14 +2182,14 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
 
       {/* Business Details/Edit/Delete Dialog */}
       <Dialog open={businessDialogMode !== null} onOpenChange={(open) => !open && handleCloseBusinessDialog()}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" aria-describedby="business-dialog-description">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {businessDialogMode === 'view' && 'Business Details'}
               {businessDialogMode === 'edit' && 'Edit Business'}
               {businessDialogMode === 'delete' && 'Delete Business'}
             </DialogTitle>
-            <DialogDescription id="business-dialog-description">
+            <DialogDescription>
               {businessDialogMode === 'view' && 'View detailed business information'}
               {businessDialogMode === 'edit' && 'Update business information and settings'}
               {businessDialogMode === 'delete' && 'Are you sure you want to delete this business? This action cannot be undone.'}
@@ -2320,14 +2339,14 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
 
       {/* Location Details/Edit/Delete Dialog */}
       <Dialog open={locationDialogMode !== null} onOpenChange={(open) => !open && handleCloseLocationDialog()}>
-        <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto" aria-describedby="location-dialog-description">
+        <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {locationDialogMode === 'view' && 'Location Details'}
               {locationDialogMode === 'edit' && 'Edit Location'}
               {locationDialogMode === 'delete' && 'Delete Location'}
             </DialogTitle>
-            <DialogDescription id="location-dialog-description">
+            <DialogDescription>
               {locationDialogMode === 'view' && 'View detailed location statistics and information'}
               {locationDialogMode === 'edit' && 'Update location information and settings'}
               {locationDialogMode === 'delete' && 'Are you sure you want to delete this location? All associated data will be preserved but ungrouped.'}
@@ -2506,10 +2525,10 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
 
       {/* Platform Settings Dialog */}
       <Dialog open={platformSettingsOpen} onOpenChange={setPlatformSettingsOpen}>
-        <DialogContent className="sm:max-w-[700px]" aria-describedby="platform-settings-description">
+        <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
             <DialogTitle>Platform Settings</DialogTitle>
-            <DialogDescription id="platform-settings-description">
+            <DialogDescription>
               Configure global platform settings and policies
             </DialogDescription>
           </DialogHeader>

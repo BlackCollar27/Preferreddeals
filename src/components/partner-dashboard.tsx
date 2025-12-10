@@ -779,10 +779,10 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
 
       {/* View Listing Modal */}
       <Dialog open={!!viewListingId} onOpenChange={(open) => !open && setViewListingId(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" aria-describedby="view-listing-description">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl sm:text-2xl">{selectedListing?.name || 'Business Listing'}</DialogTitle>
-            <DialogDescription id="view-listing-description" className="text-xs sm:text-sm">Preview how your listing appears to customers</DialogDescription>
+            <DialogDescription className="text-xs sm:text-sm">Preview how your listing appears to customers</DialogDescription>
           </DialogHeader>
           {selectedListing && (
             <>
@@ -923,10 +923,10 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
           setNewAmenity('');
         }
       }}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" aria-describedby="edit-listing-description">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl sm:text-2xl">Edit Listing</DialogTitle>
-            <DialogDescription id="edit-listing-description" className="text-xs sm:text-sm">Update your business information</DialogDescription>
+            <DialogDescription className="text-xs sm:text-sm">Update your business information</DialogDescription>
           </DialogHeader>
           {editingListing && (
             <>
@@ -1134,10 +1134,10 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
 
       {/* Create Deal Modal */}
       <Dialog open={showCreateDeal} onOpenChange={setShowCreateDeal}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" aria-describedby="create-deal-description">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl sm:text-2xl">Create New Deal</DialogTitle>
-            <DialogDescription id="create-deal-description" className="text-xs sm:text-sm">Create a promotional offer to attract more customers</DialogDescription>
+            <DialogDescription className="text-xs sm:text-sm">Create a promotional offer to attract more customers</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 sm:space-y-6">
@@ -1231,10 +1231,10 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
         setShowNewBusiness(open);
         if (!open) setNewBusinessStep(1);
       }}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto" aria-describedby="new-business-description">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl sm:text-2xl">Add New Business</DialogTitle>
-            <DialogDescription id="new-business-description" className="text-xs sm:text-sm">
+            <DialogDescription className="text-xs sm:text-sm">
               Step {newBusinessStep} of 4: {
                 newBusinessStep === 1 ? 'Select Plan' :
                 newBusinessStep === 2 ? 'Business Details' :
@@ -1460,10 +1460,10 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
 
       {/* Upgrade to Premium Modal */}
       <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
-        <DialogContent className="sm:max-w-2xl" aria-describedby="upgrade-premium-description">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Upgrade to Premium</DialogTitle>
-            <DialogDescription id="upgrade-premium-description">
+            <DialogDescription>
               Choose the perfect plan for your business
             </DialogDescription>
           </DialogHeader>
@@ -1524,10 +1524,10 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
 
       {/* Add Payment Method Dialog */}
       <Dialog open={showAddPayment} onOpenChange={setShowAddPayment}>
-        <DialogContent className="max-w-md" aria-describedby="add-payment-description">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Add Payment Method</DialogTitle>
-            <DialogDescription id="add-payment-description">
+            <DialogDescription>
               Add a new credit or debit card to your account
             </DialogDescription>
           </DialogHeader>
@@ -1631,10 +1631,10 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
 
       {/* Payment Confirmation Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="max-w-md" aria-describedby="payment-dialog-description">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Confirm Payment</DialogTitle>
-            <DialogDescription id="payment-dialog-description">
+            <DialogDescription>
               Complete your payment to upgrade to {premiumPlans.find(p => p.id === selectedPlan)?.name}
             </DialogDescription>
           </DialogHeader>
@@ -1781,7 +1781,7 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
 
       {/* Welcome Modal */}
       <Dialog open={showWelcomeModal} onOpenChange={setShowWelcomeModal}>
-        <DialogContent className="sm:max-w-2xl" aria-describedby="welcome-modal-description">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <div className="flex items-center justify-center mb-4">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
@@ -1789,7 +1789,7 @@ export function PartnerDashboard({ userName, onNavigate, onLogout }: PartnerDash
               </div>
             </div>
             <DialogTitle className="text-center text-2xl">Congratulations!</DialogTitle>
-            <DialogDescription id="welcome-modal-description" className="text-center text-base">
+            <DialogDescription className="text-center text-base">
               Your listing has been created successfully. Here's how to get the most out of your dashboard.
             </DialogDescription>
           </DialogHeader>

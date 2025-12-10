@@ -487,12 +487,12 @@ export function Settings({ onBack, userName, userEmail, isDarkMode, onToggleThem
 
       {/* Add/Edit Location Dialog */}
       <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>
-        <DialogContent aria-describedby="location-dialog-description">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>
               {editingLocation ? 'Edit Location' : 'Add New Location'}
             </DialogTitle>
-            <DialogDescription id="location-dialog-description">
+            <DialogDescription>
               {editingLocation 
                 ? 'Update the details for this location' 
                 : 'Add a new service location to your coverage area'}

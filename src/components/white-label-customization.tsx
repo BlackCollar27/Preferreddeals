@@ -420,10 +420,10 @@ export function WhiteLabelCustomization({
           setNewCategoryName('');
         }
       }}>
-        <DialogContent className="sm:max-w-[425px]" aria-describedby="category-dialog-description">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{editingCategory ? 'Edit Category' : 'Add New Category'}</DialogTitle>
-            <DialogDescription id="category-dialog-description">
+            <DialogDescription>
               {editingCategory ? 'Update the category name' : 'Create a new category for organizing businesses'}
             </DialogDescription>
           </DialogHeader>
@@ -463,12 +463,12 @@ export function WhiteLabelCustomization({
           setNewMenuUrl('');
         }
       }}>
-        <DialogContent className="sm:max-w-[425px]" aria-describedby="menu-dialog-description">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
               {editingMenuItem ? 'Edit' : 'Add'} {menuType === 'header' ? 'Header' : 'Footer'} Menu Link
             </DialogTitle>
-            <DialogDescription id="menu-dialog-description">
+            <DialogDescription>
               {editingMenuItem 
                 ? `Update the navigation link in your platform's ${menuType} menu`
                 : `Add a new navigation link to your platform's ${menuType} menu`

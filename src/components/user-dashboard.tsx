@@ -242,12 +242,12 @@ export function UserDashboard({ userType, userName, savedDeals, onNavigate, onDa
 
         {/* Business Detail Modal */}
         <Dialog open={!!selectedRecommendation} onOpenChange={(open) => !open && setSelectedRecommendation(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" aria-describedby="business-detail-description">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             {selectedBusiness && (
               <>
                 <DialogHeader>
                   <DialogTitle className="text-2xl">{selectedBusiness.name}</DialogTitle>
-                  <DialogDescription id="business-detail-description">
+                  <DialogDescription>
                     View business details and exclusive deals
                   </DialogDescription>
                 </DialogHeader>
@@ -403,7 +403,7 @@ export function UserDashboard({ userType, userName, savedDeals, onNavigate, onDa
 
         {/* Welcome Modal for New Users */}
         <Dialog open={showWelcomeModal} onOpenChange={setShowWelcomeModal}>
-          <DialogContent className="sm:max-w-2xl" aria-describedby="user-welcome-description">
+          <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
               <div className="flex items-center justify-center mb-4">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
@@ -411,7 +411,7 @@ export function UserDashboard({ userType, userName, savedDeals, onNavigate, onDa
                 </div>
               </div>
               <DialogTitle className="text-center text-2xl">Welcome to Your Local Deals Directory!</DialogTitle>
-              <DialogDescription id="user-welcome-description" className="text-center">
+              <DialogDescription className="text-center">
                 Get the most out of your experience with these quick tips
               </DialogDescription>
             </DialogHeader>

@@ -741,10 +741,10 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* Business Detail Dialog */}
       <Dialog open={businessDetailOpen} onOpenChange={setBusinessDetailOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" aria-describedby="business-detail-description">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Business Details</DialogTitle>
-            <DialogDescription id="business-detail-description">
+            <DialogDescription>
               Learn more about this business before adding to your directory
             </DialogDescription>
           </DialogHeader>
@@ -829,10 +829,10 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* Location Details Dialog */}
       <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" aria-describedby="location-details-description">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Location Details</DialogTitle>
-            <DialogDescription id="location-details-description">
+            <DialogDescription>
               Detailed statistics and performance for this location
             </DialogDescription>
           </DialogHeader>
@@ -939,10 +939,10 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* Add Payment Method Dialog */}
       <Dialog open={showAddPayment} onOpenChange={setShowAddPayment}>
-        <DialogContent className="max-w-md" aria-describedby="add-payment-description">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Add Payment Method</DialogTitle>
-            <DialogDescription id="add-payment-description">
+            <DialogDescription>
               Add a new credit or debit card to your account
             </DialogDescription>
           </DialogHeader>
@@ -1046,10 +1046,10 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* Upgrade to White-Label Dialog */}
       <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
-        <DialogContent className="sm:max-w-2xl" aria-describedby="upgrade-white-label-description">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Upgrade to White-Label Platform</DialogTitle>
-            <DialogDescription id="upgrade-white-label-description">
+            <DialogDescription>
               Launch your own branded directory and grow your business
             </DialogDescription>
           </DialogHeader>
@@ -1111,10 +1111,10 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* Payment Confirmation Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="max-w-md" aria-describedby="payment-dialog-description">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Confirm Payment</DialogTitle>
-            <DialogDescription id="payment-dialog-description">
+            <DialogDescription>
               Complete your payment to activate {whiteLabelPlans.find(p => p.id === selectedPlan)?.name} White-Label Platform
             </DialogDescription>
           </DialogHeader>
@@ -1259,10 +1259,10 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* Request NFC Materials Dialog */}
       <Dialog open={showNfcStandsDialog} onOpenChange={setShowNfcStandsDialog}>
-        <DialogContent className="sm:max-w-lg" aria-describedby="nfc-stands-description">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Request Free NFC Materials</DialogTitle>
-            <DialogDescription id="nfc-stands-description">
+            <DialogDescription>
               Order complimentary NFC stands and keychains for your distribution network
             </DialogDescription>
           </DialogHeader>
@@ -1443,7 +1443,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* Welcome Modal */}
       <Dialog open={showWelcomeModal} onOpenChange={setShowWelcomeModal}>
-        <DialogContent className="sm:max-w-2xl" aria-describedby="welcome-modal-description">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <div className="flex items-center justify-center mb-4">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
@@ -1451,7 +1451,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
               </div>
             </div>
             <DialogTitle className="text-center text-2xl">Congratulations!</DialogTitle>
-            <DialogDescription id="welcome-modal-description" className="text-center text-base">
+            <DialogDescription className="text-center text-base">
               You're now a Distribution Partner! Here's how to get the most out of your dashboard.
             </DialogDescription>
           </DialogHeader>
@@ -1494,7 +1494,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
 
       {/* White-Label Welcome Modal */}
       <Dialog open={showWhiteLabelWelcomeModal} onOpenChange={setShowWhiteLabelWelcomeModal}>
-        <DialogContent className="sm:max-w-2xl" aria-describedby="white-label-welcome-modal-description">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <div className="flex items-center justify-center mb-4">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
@@ -1502,7 +1502,7 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
               </div>
             </div>
             <DialogTitle className="text-center text-2xl">Welcome to Your White-Label Platform!</DialogTitle>
-            <DialogDescription id="white-label-welcome-modal-description" className="text-center text-base">
+            <DialogDescription className="text-center text-base">
               Congratulations on upgrading to a White-Label Directory! Here's how to get started.
             </DialogDescription>
           </DialogHeader>

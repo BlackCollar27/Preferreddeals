@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Edit, Eye, TrendingUp, Users, Phone, Mail, DollarSign, CreditCard, Download, Plus, Trash2, Check, CheckCircle, Store, ShoppingBag, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Edit, Eye, TrendingUp, Users, Phone, Mail, DollarSign, CreditCard, Download, Plus, Trash2, Check, CheckCircle, Store, ShoppingBag, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Button } from './ui/button';
@@ -402,104 +402,58 @@ export function BusinessDashboard({ businessId, onNavigate, onLogout }: Business
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-        {/* Slider Navigation */}
-        <div className="space-y-3 sm:space-y-4">
-          {/* Tab Name with Arrows */}
-          <div className="relative text-center">
-            <h2 className="text-xl sm:text-2xl capitalize">
-              {activeTab === 'listings' ? 'My Listings' : activeTab}
-            </h2>
-            
-            {/* Navigation Arrows */}
-            <button
-              onClick={() => {
-                const tabs = ['analytics', 'listings', 'billing'];
-                const currentIndex = tabs.indexOf(activeTab);
-                const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
-                setActiveTab(tabs[prevIndex]);
-              }}
-              className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 size-8 sm:size-10 rounded-full bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-900 flex items-center justify-center shadow-sm transition-all"
-              aria-label="Previous section"
-            >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            
-            <button
-              onClick={() => {
-                const tabs = ['analytics', 'listings', 'billing'];
-                const currentIndex = tabs.indexOf(activeTab);
-                const nextIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
-                setActiveTab(tabs[nextIndex]);
-              }}
-              className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 size-8 sm:size-10 rounded-full bg-white border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-900 flex items-center justify-center shadow-sm transition-all"
-              aria-label="Next section"
-            >
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-          </div>
-
-          {/* Carousel Indicators (Dots) */}
-          <div className="flex justify-center gap-2">
-            {['analytics', 'listings', 'billing'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`h-2 rounded-full transition-all ${
-                  tab === activeTab 
-                    ? 'w-8 bg-black' 
-                    : 'w-2 bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to ${tab === 'listings' ? 'My Listings' : tab}`}
-              />
-            ))}
-          </div>
-        </div>
+        {/* Tab Navigation */}
+        <TabsList className="grid w-full grid-cols-3 gap-2">
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="listings">My Listings</TabsTrigger>
+          <TabsTrigger value="billing">Billing</TabsTrigger>
+        </TabsList>
 
         {/* Analytics Tab */}
         <TabsContent value="analytics" className="space-y-6">
-          {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Key Metrics - 4 Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm">Total Views</CardTitle>
-                <Eye className="w-4 h-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl">1,234</div>
-                <p className="text-xs text-gray-600 mt-1">+12% from last week</p>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Eye className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div className="text-3xl mb-1">1,234</div>
+                <p className="text-sm text-muted-foreground">Total Views</p>
+                <p className="text-xs text-muted-foreground mt-1">+12% from last week</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm">Profile Clicks</CardTitle>
-                <TrendingUp className="w-4 h-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl">342</div>
-                <p className="text-xs text-gray-600 mt-1">+8% from last week</p>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendingUp className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div className="text-3xl mb-1">342</div>
+                <p className="text-sm text-muted-foreground">Total Engagement</p>
+                <p className="text-xs text-muted-foreground mt-1">+8% from last week</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm">Phone Clicks</CardTitle>
-                <Phone className="w-4 h-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl">128</div>
-                <p className="text-xs text-gray-600 mt-1">+15% from last week</p>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Phone className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div className="text-3xl mb-1">128</div>
+                <p className="text-sm text-muted-foreground">Phone Clicks</p>
+                <p className="text-xs text-muted-foreground mt-1">+15% from last week</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm">Email Clicks</CardTitle>
-                <Mail className="w-4 h-4 text-gray-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl">87</div>
-                <p className="text-xs text-gray-600 mt-1">+5% from last week</p>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Mail className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div className="text-3xl mb-1">87</div>
+                <p className="text-sm text-muted-foreground">Email Clicks</p>
+                <p className="text-xs text-muted-foreground mt-1">+5% from last week</p>
               </CardContent>
             </Card>
           </div>
@@ -935,10 +889,10 @@ export function BusinessDashboard({ businessId, onNavigate, onLogout }: Business
                       Add Card
                     </Button>
                   </DialogTrigger>
-                  <DialogContent aria-describedby="add-card-description">
+                  <DialogContent>
                     <DialogHeader>
                       <DialogTitle>Add Payment Method</DialogTitle>
-                      <DialogDescription id="add-card-description">
+                      <DialogDescription>
                         Add a new credit or debit card to your account
                       </DialogDescription>
                     </DialogHeader>
@@ -1198,10 +1152,10 @@ export function BusinessDashboard({ businessId, onNavigate, onLogout }: Business
 
       {/* Upgrade to Premium Modal */}
       <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
-        <DialogContent className="sm:max-w-2xl" aria-describedby="upgrade-description">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Upgrade to Premium</DialogTitle>
-            <DialogDescription id="upgrade-description">
+            <DialogDescription>
               Choose the perfect plan for your business
             </DialogDescription>
           </DialogHeader>
@@ -1262,10 +1216,10 @@ export function BusinessDashboard({ businessId, onNavigate, onLogout }: Business
 
       {/* Payment Confirmation Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="sm:max-w-md" aria-describedby="payment-description">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Confirm Payment</DialogTitle>
-            <DialogDescription id="payment-description">
+            <DialogDescription>
               Complete your upgrade to {selectedPlan.name} for ${selectedPlan.price}
             </DialogDescription>
           </DialogHeader>

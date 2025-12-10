@@ -1050,14 +1050,14 @@ export function WhiteLabelPlatform({ onBack, partnerName, onNavigate }: WhiteLab
 
       {/* Approval/Rejection Dialog */}
       <Dialog open={approvalDialogMode !== null} onOpenChange={(open) => !open && handleCloseDialog()}>
-        <DialogContent className="sm:max-w-[600px]" aria-describedby="approval-action-description">
+        <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>
               {approvalDialogMode === 'approve' && 'Approve Business'}
               {approvalDialogMode === 'reject' && 'Reject Business Application'}
               {approvalDialogMode === 'view' && 'Business Application Details'}
             </DialogTitle>
-            <DialogDescription id="approval-action-description">
+            <DialogDescription>
               {approvalDialogMode === 'approve' && 'Approve this business to add it to your community directory'}
               {approvalDialogMode === 'reject' && 'Provide a reason for rejecting this application'}
               {approvalDialogMode === 'view' && 'Review business application details'}
@@ -1142,10 +1142,10 @@ export function WhiteLabelPlatform({ onBack, partnerName, onNavigate }: WhiteLab
 
       {/* Marketplace Business Detail Dialog */}
       <Dialog open={businessDetailOpen} onOpenChange={setBusinessDetailOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" aria-describedby="marketplace-business-description">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Business Details</DialogTitle>
-            <DialogDescription id="marketplace-business-description">
+            <DialogDescription>
               Learn more about this business before adding to your directory
             </DialogDescription>
           </DialogHeader>
