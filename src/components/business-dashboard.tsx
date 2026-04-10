@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Edit, Eye, TrendingUp, Users, Phone, Mail, DollarSign, CreditCard, Download, Plus, Trash2, Check, CheckCircle, Store, ShoppingBag, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router';
+import { Edit, Eye, TrendingUp, Users, Phone, Mail, DollarSign, CreditCard, Download, Plus, Trash2, Check, CheckCircle, Store, ShoppingBag, Sparkles, LogOut, Menu, BarChart3, FileText } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Button } from './ui/button';
@@ -39,9 +40,12 @@ import {
 } from './ui/alert-dialog';
 
 interface BusinessDashboardProps {
-  businessId: string | null;
+  businessId?: string | null;
   onNavigate?: (page: string) => void;
   onLogout?: () => void;
+  defaultTab?: string;
+  pageTitle?: string;
+  pageDescription?: string;
 }
 
 interface Listing {
@@ -149,7 +153,9 @@ const premiumPlans = [
   },
 ];
 
-export function BusinessDashboard({ businessId, onNavigate, onLogout }: BusinessDashboardProps) {
+export function BusinessDashboard({ businessId = null, onNavigate, onLogout, defaultTab = 'analytics', pageTitle = 'Business Dashboard', pageDescription = 'Manage your listings and track performance' }: BusinessDashboardProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
   // Multiple listings support - Updated with premium modal and $49 pricing
   const [listings, setListings] = useState<Listing[]>([
     {
@@ -392,22 +398,142 @@ export function BusinessDashboard({ businessId, onNavigate, onLogout }: Business
 
   const premiumListings = listings.filter(l => l.isPremium);
   
-  const [activeTab, setActiveTab] = useState('analytics');
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const menuItems = [
+    { label: 'Analytics', value: 'analytics', icon: BarChart3 },
+    { label: 'My Listings', value: 'listings', icon: Store },
+    { label: 'Billing', value: 'billing', icon: CreditCard },
+  ];
+
+  // Sync activeTab with current URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('/business/analytics')) {
+      setActiveTab('analytics');
+    } else if (path.includes('/business/listings')) {
+      setActiveTab('listings');
+    } else if (path.includes('/business/billing')) {
+      setActiveTab('billing');
+    }
+  }, [location.pathname]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="mb-2">Business Dashboard</h1>
-        <p className="text-gray-600">Manage your listings and track performance</p>
+    <div className="flex min-h-screen bg-background">
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:border-r lg:border-border lg:fixed lg:inset-y-0 bg-background">
+        <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+          <div className="px-4 mb-8">
+            <h2 className="text-lg font-semibold">Business Dashboard</h2>
+          </div>
+          <nav className="flex-1 px-2 space-y-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.value}
+                  onClick={() => navigate(`/business/${item.value}`)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-md transition-colors ${
+                    activeTab === item.value
+                      ? 'bg-accent text-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                  }`}
+                >
+                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  {item.label}
+                </button>
+              );
+            })}
+          </nav>
+          <div className="px-2 space-y-2 border-t border-border pt-4">
+            <Button 
+              variant="outline" 
+              onClick={onLogout || (() => {
+                localStorage.removeItem('user_type');
+                localStorage.removeItem('user_name');
+                navigate('/discover/preferred-deals');
+              })} 
+              className="w-full justify-start"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Mobile Header with Dropdown */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
+        <div className="flex items-center justify-center px-4 h-16 relative">
+          <h2 className="font-semibold">Business Dashboard</h2>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="absolute right-4"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+        </div>
+        
+        {/* Mobile Dropdown Menu */}
+        {isMobileMenuOpen && (
+          <div className="border-t border-border bg-background">
+            <nav className="px-2 py-2 space-y-1">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.value}
+                    onClick={() => {
+                      navigate(`/business/${item.value}`);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-md transition-colors ${
+                      activeTab === item.value
+                        ? 'bg-accent text-foreground'
+                        : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    {item.label}
+                  </button>
+                );
+              })}
+              <div className="border-t border-border pt-2 mt-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    const logoutFn = onLogout || (() => {
+                      localStorage.removeItem('user_type');
+                      localStorage.removeItem('user_name');
+                      navigate('/discover/preferred-deals');
+                    });
+                    logoutFn();
+                    setIsMobileMenuOpen(false);
+                  }} 
+                  className="w-full justify-start"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-        {/* Tab Navigation */}
-        <TabsList className="grid w-full grid-cols-3 gap-2">
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="listings">My Listings</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
-        </TabsList>
+      {/* Main Content */}
+      <div className="flex-1 lg:pl-64">
+        <main className="pt-20 lg:pt-8 px-4 sm:px-6 lg:px-8 pb-8">
+          {/* Page Title */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold">{pageTitle}</h1>
+            <p className="text-muted-foreground text-sm mt-1">{pageDescription}</p>
+          </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">{/* Removed TabsList */}
 
         {/* Analytics Tab */}
         <TabsContent value="analytics" className="space-y-6">
@@ -1421,6 +1547,8 @@ export function BusinessDashboard({ businessId, onNavigate, onLogout }: Business
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+        </main>
+      </div>
     </div>
   );
 }

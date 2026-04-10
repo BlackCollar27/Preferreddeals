@@ -9,13 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Switch } from './ui/switch';
 import { Badge } from './ui/badge';
 import { toast } from 'sonner@2.0.3';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../lib/auth-context';
 
-interface BecomePartnerProps {
-  onSignupComplete: (businessId: string) => void;
-  onBack?: () => void;
-}
-
-export function BecomePartner({ onSignupComplete, onBack }: BecomePartnerProps) {
+export function BecomePartner() {
+  const navigate = useNavigate();
+  const { businessLogin, userType } = useAuth();
   const [formData, setFormData] = useState({
     businessName: '',
     category: '',
@@ -38,7 +37,8 @@ export function BecomePartner({ onSignupComplete, onBack }: BecomePartnerProps) 
       description: 'You can now manage your listing from the dashboard.',
     });
     
-    onSignupComplete(businessId);
+    businessLogin(businessId);
+    navigate('/dashboard');
   };
 
   const handleChange = (field: string, value: string) => {
@@ -51,8 +51,8 @@ export function BecomePartner({ onSignupComplete, onBack }: BecomePartnerProps) 
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {onBack && (
-        <Button variant="ghost" onClick={onBack} className="mb-6">
+      {userType === 'partner' && (
+        <Button variant="ghost" onClick={() => navigate('/dashboard')} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Dashboard
         </Button>

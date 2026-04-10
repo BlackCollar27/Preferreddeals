@@ -1,4 +1,4 @@
-import { ArrowRight, MapPin, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, MapPin, Search, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { Button } from './ui/button';
 import { mockBusinesses } from './mock-data';
 import { Card } from './ui/card';
@@ -12,15 +12,10 @@ import {
 } from './ui/carousel';
 import { useEffect, useState } from 'react';
 import { Input } from './ui/input';
+import { useNavigate } from 'react-router';
 
-type Page = 'home' | 'directory' | 'list-your-business' | 'distribution-partner';
-
-interface HomePageProps {
-  onNavigate: (page: Page, category?: string, location?: string) => void;
-  onViewListing: (businessId: string) => void;
-}
-
-export function HomePage({ onNavigate, onViewListing }: HomePageProps) {
+export function HomePage() {
+  const navigate = useNavigate();
   const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,21 +44,22 @@ export function HomePage({ onNavigate, onViewListing }: HomePageProps) {
   );
 
   const handleViewCategory = (category: string) => {
-    onNavigate('directory', category);
+    navigate(`/directory?category=${encodeURIComponent(category)}`);
   };
 
   const handleSelectCity = (city: string) => {
-    // Navigate to directory with location filter
-    onNavigate('directory', undefined, city);
+    navigate(`/directory?location=${encodeURIComponent(city)}`);
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // For now, just navigate to directory
-    // In a real app, this would search with the query
-    onNavigate('directory');
+    navigate('/directory');
   };
 
+  const handleViewListing = (businessId: string) => {
+    navigate(`/directory/${businessId}`);
+  };
+  
   // Auto-play carousel
   useEffect(() => {
     if (!api) {
@@ -113,6 +109,28 @@ export function HomePage({ onNavigate, onViewListing }: HomePageProps) {
               />
             </div>
           </form>
+        </div>
+      </section>
+
+      {/* Personalized Discovery CTA */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 to-black text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-4">
+            <Sparkles className="w-4 h-4" />
+            <span className="text-sm">Personalized for you</span>
+          </div>
+          <h2 className="mb-3 text-white">Get Matched with Perfect Businesses</h2>
+          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+            Answer a few quick questions and discover local businesses tailored to your preferences
+          </p>
+          <Button
+            onClick={() => navigate('/discover/preferred-deals')}
+            size="lg"
+            className="bg-white text-black hover:bg-gray-100"
+          >
+            Start Personalized Discovery
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
         </div>
       </section>
 
@@ -209,7 +227,7 @@ export function HomePage({ onNavigate, onViewListing }: HomePageProps) {
                           <BusinessCard
                             key={business.id}
                             business={business}
-                            onClick={() => onViewListing(business.id)}
+                            onClick={() => handleViewListing(business.id)}
                           />
                         ))}
                       </div>

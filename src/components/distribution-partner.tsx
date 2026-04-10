@@ -1,22 +1,24 @@
 import { useState } from 'react';
-import { CheckCircle, ChevronRight, Gift, Star } from 'lucide-react';
+import { Check, Zap, Users, Globe, BarChart3, Shield, Smartphone, Sparkles, ArrowRight, Building2, Star, TrendingUp, Gift, ChevronRight, CheckCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Switch } from './ui/switch';
 import { Badge } from './ui/badge';
+import { useNavigate } from 'react-router';
 
-interface DistributionPartnerProps {
-  onGetStarted: () => void;
-}
-
-export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) {
+export function DistributionPartner() {
+  const navigate = useNavigate();
   const [isAnnual, setIsAnnual] = useState(false);
 
   const monthlyPrice = 49;
   const annualPrice = 499;
   const annualMonthlyEquivalent = annualPrice / 12;
   const savings = (monthlyPrice * 12) - annualPrice;
+
+  const handleGetStarted = () => {
+    navigate('/partner/login?tab=signup');
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -43,7 +45,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
 
           <Button 
             size="lg" 
-            onClick={onGetStarted}
+            onClick={handleGetStarted}
             className="bg-white text-black hover:bg-gray-100"
           >
             GET STARTED FREE
@@ -178,7 +180,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
           </div>
 
           <div className="text-center mt-10">
-            <Button size="lg" onClick={onGetStarted}>
+            <Button size="lg" onClick={handleGetStarted}>
               GET STARTED FREE
             </Button>
           </div>
@@ -359,7 +361,7 @@ export function DistributionPartner({ onGetStarted }: DistributionPartnerProps) 
                 </div>
               </div>
 
-              <Button className="w-full bg-black" onClick={onGetStarted}>
+              <Button className="w-full bg-black" onClick={handleGetStarted}>
                 Upgrade to White Label
               </Button>
             </CardContent>

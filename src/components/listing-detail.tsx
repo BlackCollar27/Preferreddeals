@@ -12,6 +12,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from './ui/carousel';
+import { useParams, useNavigate } from 'react-router';
+import { mockBusinesses } from './mock-data';
+import { useAuth } from '../lib/auth-context';
 
 interface Business {
   id: string;
@@ -41,48 +44,32 @@ interface Business {
   gallery?: string[];
 }
 
-interface ListingDetailProps {
-  businessId: string;
-  businesses: Business[];
-  onBack: () => void;
-  isUserLoggedIn: boolean;
-  onLoginRequired: () => void;
-  savedDeals: string[];
-  onToggleSave: (businessId: string) => void;
-  isWhiteLabel?: boolean;
-}
-
-export function ListingDetail({
-  businessId,
-  businesses,
-  onBack,
-  isUserLoggedIn,
-  onLoginRequired,
-  savedDeals,
-  onToggleSave,
-  isWhiteLabel = false,
-}: ListingDetailProps) {
-  const business = businesses.find(b => b.id === businessId);
-
+export function ListingDetail() {
+  const { businessId } = useParams();
+  const navigate = useNavigate();
+  const { isUserLoggedIn, savedDeals, toggleSaveDeal } = useAuth();
+  
+  const business = mockBusinesses.find(b => b.id === businessId);
+  
   if (!business) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <p>Business not found.</p>
-        <Button onClick={onBack} className="mt-4">
-          Back to Directory
-        </Button>
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="text-center">
+          <h2 className="mb-4">Business not found</h2>
+          <Button onClick={() => navigate('/directory')}>Back to Directory</Button>
+        </div>
       </div>
     );
   }
-
-  const isSaved = savedDeals.includes(businessId);
+  
+  const isSaved = savedDeals.includes(business.id);
 
   const handleSaveToggle = () => {
     if (!isUserLoggedIn) {
-      onLoginRequired();
+      toast.error('Please log in to save deals');
       return;
     }
-    onToggleSave(businessId);
+    toggleSaveDeal(business.id);
     toast.success(isSaved ? 'Removed from saved deals' : 'Added to saved deals');
   };
 
@@ -118,7 +105,7 @@ export function ListingDetail({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Back Button */}
-      <Button variant="ghost" onClick={onBack} className="mb-4">
+      <Button variant="ghost" onClick={() => navigate('/directory')} className="mb-4">
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Directory
       </Button>
@@ -312,12 +299,16 @@ export function ListingDetail({
             <Button className="w-full" size="lg">
               Contact Business
             </Button>
-            {isWhiteLabel && business.hasDeals && (
+            {business.hasDeals && (
               <Button className="w-full" size="lg" variant="outline" onClick={handleSaveToggle}>
                 <Heart className={`w-4 h-4 mr-2 ${isSaved ? 'fill-current' : ''}`} />
                 {isSaved ? 'Saved to Deals' : 'Save Deal'}
               </Button>
             )}
+            <Button className="w-full" size="lg" variant="outline" onClick={handleShare}>
+              <Share2 className="w-4 h-4 mr-2" />
+              Share
+            </Button>
           </div>
         </div>
       </div>

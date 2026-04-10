@@ -7,36 +7,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { BusinessCard } from './business-card';
 import { mockBusinesses } from './mock-data';
+import { useNavigate, useSearchParams } from 'react-router';
 
-interface DirectoryPageProps {
-  onViewListing: (businessId: string) => void;
-  initialCategory?: string;
-  initialLocation?: string;
-}
-
-export function DirectoryPage({ onViewListing, initialCategory, initialLocation }: DirectoryPageProps) {
+export function DirectoryPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory || null);
-  const [selectedLocation, setSelectedLocation] = useState<string>(initialLocation || 'all');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string>('all');
   const [activeTab, setActiveTab] = useState<string>('all');
 
-  // Update selected category when initialCategory prop changes
+  // Read initial values from URL params
   useEffect(() => {
-    if (initialCategory === 'featured') {
+    const categoryParam = searchParams.get('category');
+    const locationParam = searchParams.get('location');
+    
+    if (categoryParam === 'featured') {
       setActiveTab('featured');
       setSelectedCategory(null);
-    } else if (initialCategory) {
-      setSelectedCategory(initialCategory);
+    } else if (categoryParam) {
+      setSelectedCategory(categoryParam);
       setActiveTab('all');
     }
-  }, [initialCategory]);
-
-  // Update selected location when initialLocation prop changes
-  useEffect(() => {
-    if (initialLocation) {
-      setSelectedLocation(initialLocation);
+    
+    if (locationParam) {
+      setSelectedLocation(locationParam);
     }
-  }, [initialLocation]);
+  }, [searchParams]);
 
   const categories = [
     'All',
@@ -77,6 +74,10 @@ export function DirectoryPage({ onViewListing, initialCategory, initialLocation 
     if (!a.featured && b.featured) return 1;
     return 0;
   });
+
+  const handleViewListing = (businessId: string) => {
+    navigate(`/directory/${businessId}`);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -169,7 +170,7 @@ export function DirectoryPage({ onViewListing, initialCategory, initialLocation 
         <TabsContent value="all">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sortedBusinesses.map((business) => (
-              <BusinessCard key={business.id} business={business} onClick={() => onViewListing(business.id)} />
+              <BusinessCard key={business.id} business={business} onClick={() => handleViewListing(business.id)} />
             ))}
           </div>
           {filteredBusinesses.length === 0 && (
@@ -182,7 +183,7 @@ export function DirectoryPage({ onViewListing, initialCategory, initialLocation 
         <TabsContent value="featured">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredBusinesses.map((business) => (
-              <BusinessCard key={business.id} business={business} onClick={() => onViewListing(business.id)} />
+              <BusinessCard key={business.id} business={business} onClick={() => handleViewListing(business.id)} />
             ))}
           </div>
           {featuredBusinesses.length === 0 && (
@@ -195,7 +196,7 @@ export function DirectoryPage({ onViewListing, initialCategory, initialLocation 
         <TabsContent value="deals">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {dealsBusinesses.map((business) => (
-              <BusinessCard key={business.id} business={business} onClick={() => onViewListing(business.id)} />
+              <BusinessCard key={business.id} business={business} onClick={() => handleViewListing(business.id)} />
             ))}
           </div>
           {dealsBusinesses.length === 0 && (

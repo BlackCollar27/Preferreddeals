@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Package, Users, DollarSign, BarChart3, Settings, TrendingUp, AlertCircle, CheckCircle, Clock, Search, Filter, MoreVertical, Eye, Edit, Trash2, Mail, Calendar, Heart, X, MapPin, Phone, Globe, Map, CreditCard, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { Package, Users, DollarSign, BarChart3, Settings, TrendingUp, AlertCircle, CheckCircle, Clock, Search, Filter, MoreVertical, Eye, Edit, Trash2, Mail, Calendar, Heart, X, MapPin, Phone, Globe, Map, CreditCard, LogOut, Menu, LayoutDashboard, Building2, MapPinned, Share2, FileCheck, Tag } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import logoImage from 'figma:asset/dd3bfa837dfa92a5643677141b8779a2931011b6.png';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Button } from './ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
@@ -20,16 +22,20 @@ import { UserDetailAdmin } from './user-detail-admin';
 import { WhiteLabelPlatformSettings } from './white-label-platform-settings';
 
 interface AdminDashboardProps {
-  userName: string;
+  userName?: string;
   onLogout?: () => void;
+  defaultTab?: string;
+  pageTitle?: string;
+  pageDescription?: string;
 }
 
-export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
+export function AdminDashboard({ userName = 'Admin', onLogout, defaultTab = 'overview', pageTitle = 'Admin Dashboard', pageDescription = 'Platform overview and management' }: AdminDashboardProps) {
+  const navigate = useNavigate();
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('month');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState<typeof recentUsers[0] | null>(null);
   const [userDialogMode, setUserDialogMode] = useState<'view' | 'edit' | 'suspend' | null>(null);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [selectedApproval, setSelectedApproval] = useState<any>(null);
   const [approvalDialogMode, setApprovalDialogMode] = useState<'view' | 'approve' | 'reject' | null>(null);
   const [platformSettingsOpen, setPlatformSettingsOpen] = useState(false);
@@ -44,7 +50,7 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
   const [showLocationDetail, setShowLocationDetail] = useState(false);
   const [showUserDetail, setShowUserDetail] = useState(false);
   const [showDistributorPlatformSettings, setShowDistributorPlatformSettings] = useState(false);
-  const [showAdminPlatformSettings, setShowAdminPlatformSettings] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Pricing Management State
   const [monthlyPrice, setMonthlyPrice] = useState(49);
@@ -483,61 +489,146 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
     );
   }
 
-  if (showAdminPlatformSettings) {
-    return (
-      <WhiteLabelPlatformSettings
-        partnerName="Preferred Deals"
-        onBack={() => setShowAdminPlatformSettings(false)}
-        isAdmin={true}
-      />
-    );
-  }
+  const menuItems = [
+    { label: 'Overview', value: 'overview', icon: LayoutDashboard },
+    { label: 'Businesses', value: 'businesses', icon: Building2 },
+    { label: 'Users', value: 'users', icon: Users },
+    { label: 'Locations', value: 'locations', icon: MapPinned },
+    { label: 'Distributors', value: 'distributors', icon: Share2 },
+    { label: 'Approvals', value: 'approvals', icon: FileCheck },
+    { label: 'Pricing', value: 'pricing', icon: Tag },
+    { label: 'Platform Settings', value: 'platform-settings', icon: Settings },
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="mb-2 text-[20px]">Admin Dashboard</h1>
-          <p className="text-muted-foreground text-sm sm:text-base">Platform overview and management</p>
-        </div>
-        <div className="flex gap-2 w-full sm:w-auto">
-          <Button variant="outline" onClick={() => setShowAdminPlatformSettings(true)} className="flex-1 sm:flex-initial">
-            <Settings className="w-4 h-4 mr-2" />
-            Platform Settings
-          </Button>
-          {onLogout && (
-            <Button variant="outline" onClick={onLogout} className="flex-1 sm:flex-initial">
+    <div className="flex min-h-screen bg-background">
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:border-r lg:border-border lg:fixed lg:inset-y-0 bg-background">
+        <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+          <div className="px-4 mb-8">
+            <h2 className="text-lg font-semibold">Admin Dashboard</h2>
+            
+          </div>
+          <nav className="flex-1 px-2 space-y-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.value}
+                  onClick={() => navigate(`/admin/${item.value}`)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-md transition-colors ${
+                    activeTab === item.value
+                      ? 'bg-accent text-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                  }`}
+                >
+                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  {item.label}
+                </button>
+              );
+            })}
+          </nav>
+          <div className="px-2 space-y-2 border-t border-border pt-4">
+            <Button 
+              variant="outline" 
+              onClick={onLogout || (() => {
+                localStorage.removeItem('user_type');
+                localStorage.removeItem('user_name');
+                navigate('/discover/preferred-deals');
+              })} 
+              className="w-full justify-start"
+            >
               <LogOut className="w-4 h-4 mr-2" />
               Logout
             </Button>
-          )}
+          </div>
         </div>
+      </aside>
+
+      {/* Mobile Header with Dropdown */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
+        <div className="flex items-center justify-center px-4 h-16 relative">
+          <img src={logoImage} alt="Preferred Deals" className="h-12" />
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="absolute right-4"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+        </div>
+        
+        {/* Mobile Dropdown Menu */}
+        {isMobileMenuOpen && (
+          <div className="border-t border-border bg-background">
+            <nav className="px-2 py-2 space-y-1">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.value}
+                    onClick={() => {
+                      navigate(`/admin/${item.value}`);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-md transition-colors ${
+                      activeTab === item.value
+                        ? 'bg-accent text-foreground'
+                        : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    {item.label}
+                  </button>
+                );
+              })}
+              <div className="border-t border-border pt-2 mt-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    const logoutFn = onLogout || (() => {
+                      localStorage.removeItem('user_type');
+                      localStorage.removeItem('user_name');
+                      navigate('/discover/preferred-deals');
+                    });
+                    logoutFn();
+                    setIsMobileMenuOpen(false);
+                  }} 
+                  className="w-full justify-start"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
 
-      {/* Alert for pending approvals */}
-      {platformStats.pendingApprovals > 0 && (
-        <Card className="mb-4 sm:mb-6 border-orange-300 bg-orange-50">
-          <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0" />
-              <span className="text-xs sm:text-sm">{platformStats.pendingApprovals} items require your attention</span>
-            </div>
-            <Button variant="outline" size="sm" onClick={() => setActiveTab('approvals')} className="w-full sm:w-auto">Review Now</Button>
-          </CardContent>
-        </Card>
-      )}
+      {/* Main Content */}
+      <div className="flex-1 lg:pl-64">
+        <main className="pt-20 lg:pt-8 px-4 sm:px-6 lg:px-8 pb-8">
+          {/* Page Title */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold">{pageTitle}</h1>
+            <p className="text-muted-foreground text-sm mt-1">{pageDescription}</p>
+          </div>
+
+          {/* Alert for pending approvals */}
+          {platformStats.pendingApprovals > 0 && (
+            <Card className="mb-4 sm:mb-6 border-orange-300 bg-orange-50">
+              <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">{platformStats.pendingApprovals} items require your attention</span>
+                </div>
+                <Button variant="outline" size="sm" onClick={() => navigate('/admin/approvals')} className="w-full sm:w-auto">Review Now</Button>
+              </CardContent>
+            </Card>
+          )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-        {/* Tab Navigation */}
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7 gap-2">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="businesses">Businesses</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="locations">Locations</TabsTrigger>
-          <TabsTrigger value="distributors">Distributors</TabsTrigger>
-          <TabsTrigger value="approvals">Approvals</TabsTrigger>
-          <TabsTrigger value="pricing">Pricing</TabsTrigger>
-        </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
           {/* Key Metrics - 4 Cards */}
@@ -705,7 +796,7 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
                         <p className="text-xs sm:text-sm truncate">{item.name}</p>
                         <p className="text-xs text-muted-foreground truncate">{item.type} - {item.date}</p>
                       </div>
-                      <Button size="sm" variant="outline" onClick={() => setActiveTab('approvals')} className="text-xs flex-shrink-0">Review</Button>
+                      <Button size="sm" variant="outline" onClick={() => navigate('/admin/approvals')} className="text-xs flex-shrink-0">Review</Button>
                     </div>
                   ))}
                 </div>
@@ -1595,6 +1686,13 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="platform-settings">
+          <WhiteLabelPlatformSettings
+            partnerName="Preferred Deals"
+            isAdmin={true}
+          />
         </TabsContent>
       </Tabs>
 
@@ -2775,6 +2873,8 @@ export function AdminDashboard({ userName, onLogout }: AdminDashboardProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+        </main>
+      </div>
     </div>
   );
 }

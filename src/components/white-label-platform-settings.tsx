@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Globe, ExternalLink, Upload, Trash2, Plus, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { ArrowLeft, Globe, ExternalLink, Upload, Trash2, Plus, ChevronLeft, ChevronRight, MapPin, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Button } from './ui/button';
@@ -11,14 +11,20 @@ import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { toast } from 'sonner@2.0.3';
 import { WhiteLabelCustomization } from './white-label-customization';
+import { useNavigate } from 'react-router';
 
 interface WhiteLabelPlatformSettingsProps {
-  onBack: () => void;
-  partnerName: string;
+  onBack?: () => void;
+  partnerName?: string;
   isAdmin?: boolean;
 }
 
-export function WhiteLabelPlatformSettings({ onBack, partnerName, isAdmin = false }: WhiteLabelPlatformSettingsProps) {
+export function WhiteLabelPlatformSettings({ 
+  onBack, 
+  partnerName = 'Your Platform', 
+  isAdmin = false 
+}: WhiteLabelPlatformSettingsProps = {}) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(isAdmin ? 'branding' : 'domain');
   const [settingsCarouselApi, setSettingsCarouselApi] = useState<any>();
   const [settingsTabIndex, setSettingsTabIndex] = useState(0);
@@ -188,10 +194,12 @@ export function WhiteLabelPlatformSettings({ onBack, partnerName, isAdmin = fals
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Button variant="ghost" onClick={onBack} className="mb-6">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          {isAdmin ? 'Back to Admin Dashboard' : 'Back to White-Label Platform'}
-        </Button>
+        {onBack && (
+          <Button variant="ghost" onClick={onBack} className="mb-6">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {isAdmin ? 'Back to Admin Dashboard' : 'Back to White-Label Platform'}
+          </Button>
+        )}
 
         {/* Header */}
         <div className="mb-8">
@@ -434,6 +442,28 @@ export function WhiteLabelPlatformSettings({ onBack, partnerName, isAdmin = fals
                           </Button>
                         </div>
                       ))}
+                    </div>
+                  </div>
+
+                  {/* Discovery Flow Categories */}
+                  <div className="border-t pt-6">
+                    <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 rounded-lg">
+                      <div className="flex items-start gap-3 mb-4">
+                        <Sparkles className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                        <div className="flex-1">
+                          <h4 className="font-medium mb-1">Personalized Discovery Flow</h4>
+                          <p className="text-sm text-gray-300">
+                            Configure custom categories and questions for your platform's guided discovery experience
+                          </p>
+                        </div>
+                      </div>
+                      <Button 
+                        onClick={() => navigate('/admin/community-connect/categories')}
+                        className="w-full bg-white text-black hover:bg-gray-100"
+                        size="sm"
+                      >
+                        Manage Discovery Categories
+                      </Button>
                     </div>
                   </div>
 

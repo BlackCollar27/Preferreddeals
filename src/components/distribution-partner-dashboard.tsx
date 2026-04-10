@@ -1,6 +1,7 @@
 import { WhiteLabelPlatform } from './white-label-platform-new';
-import { useState } from 'react';
-import { Users, Award, DollarSign, TrendingUp, Copy, Share2, Gift, Globe, ArrowRight, MapPin, Package, BarChart3, Eye, Map, ChevronLeft, ChevronRight, CheckCircle, Search, CreditCard, Plus, Check, Sparkles, Star, LogOut, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router';
+import { Users, Award, DollarSign, TrendingUp, Copy, Share2, Gift, Globe, ArrowRight, MapPin, Package, BarChart3, Eye, Map, ChevronLeft, ChevronRight, CheckCircle, Search, CreditCard, Plus, Check, Sparkles, Star, LogOut, X, Menu, LayoutDashboard } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
@@ -14,17 +15,23 @@ import { Separator } from './ui/separator';
 import { toast } from 'sonner@2.0.3';
 
 interface DistributionPartnerDashboardProps {
-  userName: string;
+  userName?: string;
   onNavigate?: (page: string) => void;
   onLogout?: () => void;
   approvalStatus?: 'pending' | 'approved' | 'rejected';
+  defaultTab?: string;
+  pageTitle?: string;
+  pageDescription?: string;
 }
 
-export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, approvalStatus = 'approved' }: DistributionPartnerDashboardProps) {
+export function DistributionPartnerDashboard({ userName = 'Partner', onNavigate, onLogout, approvalStatus = 'approved', defaultTab = 'overview', pageTitle = 'Distribution Partner Dashboard', pageDescription = 'Manage your distribution network' }: DistributionPartnerDashboardProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showWhiteLabel, setShowWhiteLabel] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof partnerLocations[0] | null>(null);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [businessDetailOpen, setBusinessDetailOpen] = useState(false);
   const [selectedBusiness, setSelectedBusiness] = useState<any>(null);
   // Set to false for non-white-label users, true for white-label users
@@ -454,20 +461,137 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
     setNfcDeliveryAddress({ street: '', city: '', state: '', zip: '' });
   };
 
+  const menuItems = [
+    { label: 'Overview', value: 'overview', icon: LayoutDashboard },
+    { label: 'White-Label', value: 'white-label', icon: Globe },
+    { label: 'Billing', value: 'billing', icon: CreditCard },
+  ];
+
+  // Sync activeTab with current URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('/partner/overview')) {
+      setActiveTab('overview');
+    } else if (path.includes('/partner/white-label')) {
+      setActiveTab('white-label');
+    } else if (path.includes('/partner/billing')) {
+      setActiveTab('billing');
+    }
+  }, [location.pathname]);
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="mb-2 text-[20px]">Distribution Partner Dashboard</h1>
-          <p className="text-muted-foreground text-sm sm:text-base">Track your link performance, {userName}</p>
+    <div className="flex min-h-screen bg-background">
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:border-r lg:border-border lg:fixed lg:inset-y-0 bg-background">
+        <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+          <div className="px-4 mb-8">
+            <h2 className="text-lg font-semibold">Partner Dashboard</h2>
+          </div>
+          <nav className="flex-1 px-2 space-y-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.value}
+                  onClick={() => navigate(`/partner/${item.value}`)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-md transition-colors ${
+                    activeTab === item.value
+                      ? 'bg-accent text-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                  }`}
+                >
+                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  {item.label}
+                </button>
+              );
+            })}
+          </nav>
+          <div className="px-2 space-y-2 border-t border-border pt-4">
+            <Button 
+              variant="outline" 
+              onClick={onLogout || (() => {
+                localStorage.removeItem('user_type');
+                localStorage.removeItem('user_name');
+                navigate('/discover/preferred-deals');
+              })} 
+              className="w-full justify-start"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
-        {onLogout && (
-          <Button variant="outline" onClick={onLogout} className="w-full sm:w-auto">
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
+      </aside>
+
+      {/* Mobile Header with Dropdown */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
+        <div className="flex items-center justify-center px-4 h-16 relative">
+          <h2 className="font-semibold">Partner Dashboard</h2>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="absolute right-4"
+          >
+            <Menu className="w-5 h-5" />
           </Button>
+        </div>
+        
+        {/* Mobile Dropdown Menu */}
+        {isMobileMenuOpen && (
+          <div className="border-t border-border bg-background">
+            <nav className="px-2 py-2 space-y-1">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.value}
+                    onClick={() => {
+                      navigate(`/partner/${item.value}`);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-md transition-colors ${
+                      activeTab === item.value
+                        ? 'bg-accent text-foreground'
+                        : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    {item.label}
+                  </button>
+                );
+              })}
+              <div className="border-t border-border pt-2 mt-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    const logoutFn = onLogout || (() => {
+                      localStorage.removeItem('user_type');
+                      localStorage.removeItem('user_name');
+                      navigate('/discover/preferred-deals');
+                    });
+                    logoutFn();
+                    setIsMobileMenuOpen(false);
+                  }} 
+                  className="w-full justify-start"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            </nav>
+          </div>
         )}
       </div>
+
+      {/* Main Content */}
+      <div className="flex-1 lg:pl-64">
+        <main className="pt-20 lg:pt-8 px-4 sm:px-6 lg:px-8 pb-8">
+          {/* Page Title */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold">{pageTitle}</h1>
+            <p className="text-muted-foreground text-sm mt-1">{pageDescription}</p>
+          </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-8">
@@ -1570,6 +1694,8 @@ export function DistributionPartnerDashboard({ userName, onNavigate, onLogout, a
           </DialogFooter>
         </DialogContent>
       </Dialog>
+        </main>
+      </div>
     </div>
   );
 }
